@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Select Your Gift — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="demo-banner">
+  <strong>Academic demo</strong> — no real payments, accounts, or data are processed.
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand">
+      <span class="mark">F</span>
+      <span class="name">FRANCO TRADING<small>CHRISTMAS GIVEAWAY</small></span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="items.html" class="active">Giveaway</a>
+      <a href="#">FAQs</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="trust-chip">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+      Secure & Trusted
+    </div>
+  </div>
+</header>
+
+<div class="stepper">
+  <div class="step current"><span class="circ">1</span><span class="label">Select Gift</span></div>
+  <div class="bar"></div>
+  <div class="step"><span class="circ">2</span><span class="label">Delivery Details</span></div>
+  <div class="bar"></div>
+  <div class="step"><span class="circ">3</span><span class="label">Payment</span></div>
+</div>
+
+<main class="page-body">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:28px;">
+      <span class="kicker">Step 1 of 3</span>
+      <h2>Pick exactly one gift</h2>
+      <p>Tap a card to select it. Selecting a new gift automatically clears your previous choice.</p>
+    </div>
+
+    <div class="product-grid" id="select-grid"></div>
+
+    <div style="max-width:320px;margin:36px auto 0;">
+      <button id="continue-btn" class="btn btn-primary btn-block" disabled>
+        Continue
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <p id="hint" style="text-align:center;color:var(--muted);font-size:0.85rem;margin-top:10px;">Select a gift to continue</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-note">
+      <span>© 2026 Franco Trading. Academic demo project — not a real store.</span>
+      <span class="footer-safety">Your information stays on this device.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const grid = document.getElementById("select-grid");
+  const continueBtn = document.getElementById("continue-btn");
+  const hint = document.getElementById("hint");
+
+  let selectedId = FrancoState.get().productId || null;
+
+  function render(){
+    grid.innerHTML = PRODUCTS.map(p => `
+      <div class="product-card selectable ${selectedId === p.id ? 'is-selected' : ''}" data-id="${p.id}" tabindex="0" role="button" aria-pressed="${selectedId === p.id}">
+        <span class="select-mark">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+        </span>
+        <div class="art">${productIconSVG(p.icon)}</div>
+        <div class="body">
+          <h3>${p.name}</h3>
+          <div class="prices">
+            <span class="was">${p.was}</span>
+            <span class="now">${GIVEAWAY_PRICE}</span>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    continueBtn.disabled = !selectedId;
+    hint.textContent = selectedId ? `You selected: ${getProductById(selectedId).name}` : "Select a gift to continue";
+
+    grid.querySelectorAll(".product-card").forEach(card => {
+      card.addEventListener("click", () => toggleSelect(card.dataset.id));
+      card.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleSelect(card.dataset.id); }
+      });
+    });
+  }
+
+  function toggleSelect(id){
+    selectedId = (selectedId === id) ? null : id;
+    render();
+  }
+
+  continueBtn.addEventListener("click", () => {
+    if (!selectedId) return;
+    FrancoState.set({ productId: selectedId });
+    window.location.href = "delivery.html";
+  });
+
+  render();
+</script>
+</body>
+</html>

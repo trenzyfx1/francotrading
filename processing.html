@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Processing Demo Payment — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="demo-banner">
+  <strong>Academic demo</strong> — this is a simulated processing screen. No real transaction is occurring.
+</div>
+
+<div class="processing-wrap">
+  <div class="processing-card">
+    <div class="spinner" role="status" aria-label="Processing"></div>
+    <h2>Hold on a moment</h2>
+    <p>Your demonstration payment is being processed.</p>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="processing-pct" id="progress-pct">0%</div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const state = FrancoState.get();
+  if (!state.demoPaymentSubmitted) {
+    window.location.href = "payment.html";
+  }
+
+  const DURATION_MS = 5000;
+  const fill = document.getElementById("progress-fill");
+  const pct = document.getElementById("progress-pct");
+  const start = Date.now();
+
+  function tick(){
+    const elapsed = Date.now() - start;
+    const ratio = Math.min(elapsed / DURATION_MS, 1);
+    fill.style.width = (ratio * 100).toFixed(0) + "%";
+    pct.textContent = (ratio * 100).toFixed(0) + "%";
+
+    if (ratio < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      window.location.href = "confirmation.html";
+    }
+  }
+  requestAnimationFrame(tick);
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="demo-banner">
+  <strong>Academic demo</strong> — this is a simulated card-entry form. Please only type fictional demo details; nothing is transmitted, stored, or scanned.
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand">
+      <span class="mark">F</span>
+      <span class="name">FRANCO TRADING<small>CHRISTMAS GIVEAWAY</small></span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="items.html">Giveaway</a>
+      <a href="#">FAQs</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="trust-chip">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+      Secure & Trusted
+    </div>
+  </div>
+</header>
+
+<div class="stepper">
+  <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">Select Gift</span></div>
+  <div class="bar"></div>
+  <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">Delivery Details</span></div>
+  <div class="bar"></div>
+  <div class="step current"><span class="circ">3</span><span class="label">Payment</span></div>
+</div>
+
+<main class="page-body">
+  <div class="container" style="max-width:560px;">
+
+    <div class="demo-flag">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      Demonstration checkout — use fictional card details only (e.g. 4242 4242 4242 4242).
+    </div>
+
+    <div class="card-stage">
+      <div class="demo-card" id="demo-card">
+        <div class="face">
+          <div class="top-row">
+            <div class="chip"></div>
+            <div class="brand-mark" id="card-brand">VISA</div>
+          </div>
+          <div class="number" id="card-number-display">•••• •••• •••• ••••</div>
+          <div class="bottom-row">
+            <div>
+              <span class="exp-lbl">Card holder</span>
+              <span class="name" id="card-name-display">YOUR NAME</span>
+            </div>
+            <div>
+              <span class="exp-lbl">Expires</span>
+              <span id="card-exp-display">MM / YY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+        Card Details (Demo)
+      </div>
+      <div class="panel-body">
+
+        <div class="summary-row"><span class="k">Gift selected</span><span class="v" id="sum-gift"></span></div>
+        <div class="summary-total" style="margin-top:4px;"><span class="k">Total due</span><span class="v">GH₵20.00</span></div>
+
+        <form id="payment-form" style="margin-top:18px;" novalidate>
+          <div class="form-grid">
+            <div class="field full" data-field="cardName">
+              <label for="cardName">Cardholder name</label>
+              <input type="text" id="cardName" placeholder="e.g. Ama Mensah" autocomplete="off">
+              <div class="error"></div>
+            </div>
+
+            <div class="field full" data-field="cardNumber">
+              <label for="cardNumber">Card number <span class="opt">(demo only)</span></label>
+              <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="off">
+              <div class="error"></div>
+            </div>
+
+            <div class="field" data-field="cardExpiry">
+              <label for="cardExpiry">Expiry</label>
+              <input type="text" id="cardExpiry" placeholder="MM / YY" inputmode="numeric" autocomplete="off">
+              <div class="error"></div>
+            </div>
+
+            <div class="field" data-field="cardCvv">
+              <label for="cardCvv">CVV <span class="opt">(demo only)</span></label>
+              <input type="text" id="cardCvv" placeholder="123" inputmode="numeric" maxlength="4" autocomplete="off">
+              <div class="error"></div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+            Continue to Pay GH₵20.00
+          </button>
+
+          <div class="safe-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+            This is a demo form for a student project. No card data is sent anywhere or saved after you leave this page.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-note">
+      <span>© 2026 Franco Trading. Academic demo project — not a real store.</span>
+      <span class="footer-safety">Never enter your real card details here.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const state = FrancoState.get();
+  const product = getProductById(state.productId);
+  if (!product) window.location.href = "items.html";
+  document.getElementById("sum-gift").textContent = product.name;
+
+  const nameInput = document.getElementById("cardName");
+  const numberInput = document.getElementById("cardNumber");
+  const expiryInput = document.getElementById("cardExpiry");
+  const cvvInput = document.getElementById("cardCvv");
+
+  const nameDisplay = document.getElementById("card-name-display");
+  const numberDisplay = document.getElementById("card-number-display");
+  const expDisplay = document.getElementById("card-exp-display");
+  const brandDisplay = document.getElementById("card-brand");
+
+  nameInput.addEventListener("input", () => {
+    nameDisplay.textContent = nameInput.value.trim().toUpperCase() || "YOUR NAME";
+  });
+
+  numberInput.addEventListener("input", (e) => {
+    const formatted = formatCardNumber(e.target.value);
+    e.target.value = formatted;
+    numberDisplay.textContent = formatted ? maskCardForDisplay(formatted).replace(/(.{4})(?=.)/g, "$1 ").trim() : "•••• •••• •••• ••••";
+
+    const first = formatted.replace(/\s/g,"")[0];
+    brandDisplay.textContent = first === "5" ? "MASTERCARD" : first === "3" ? "VERVE" : "VISA";
+  });
+
+  expiryInput.addEventListener("input", (e) => {
+    const formatted = formatExpiry(e.target.value);
+    e.target.value = formatted;
+    expDisplay.textContent = formatted || "MM / YY";
+  });
+
+  cvvInput.addEventListener("input", (e) => {
+    e.target.value = e.target.value.replace(/\D/g, "").slice(0,4);
+  });
+
+  const form = document.getElementById("payment-form");
+  function showError(id, msg){
+    const field = document.querySelector(`[data-field="${id}"]`);
+    field.classList.toggle("has-error", !!msg);
+    field.querySelector(".error").textContent = msg || "";
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
+
+    if (!nameInput.value.trim()) { showError("cardName","Enter the demo cardholder name"); valid = false; } else showError("cardName","");
+    const digits = numberInput.value.replace(/\s/g,"");
+    if (digits.length < 12) { showError("cardNumber","Enter a demo card number"); valid = false; } else showError("cardNumber","");
+    if (!/^\d{2} \/ \d{2}$/.test(expiryInput.value)) { showError("cardExpiry","Use MM / YY"); valid = false; } else showError("cardExpiry","");
+    if (cvvInput.value.length < 3) { showError("cardCvv","Enter 3-4 digits"); valid = false; } else showError("cardCvv","");
+
+    if (!valid) return;
+
+    // Demo only — nothing is stored beyond this in-memory flag for the processing page.
+    FrancoState.set({ demoPaymentSubmitted: true });
+    window.location.href = "processing.html";
+  });
+</script>
+</body>
+</html>

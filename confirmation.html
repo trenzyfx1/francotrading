@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Complete — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="demo-banner">
+  <strong>Academic demo</strong> — no real payment was made and no data was saved or transmitted.
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand">
+      <span class="mark">F</span>
+      <span class="name">FRANCO TRADING<small>CHRISTMAS GIVEAWAY</small></span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="items.html">Giveaway</a>
+      <a href="#">FAQs</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="trust-chip">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+      Secure & Trusted
+    </div>
+  </div>
+</header>
+
+<div class="confirm-wrap">
+  <div class="confirm-card">
+    <div class="check-badge">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h2>Demo payment complete</h2>
+    <p class="sub">This marks the end of the current build. In a real product, this step would hand off to delivery tracking — nothing further happens here.</p>
+
+    <div class="confirm-summary" id="confirm-summary"><!-- filled by JS --></div>
+
+    <a href="index.html" id="restart-link" class="btn btn-primary btn-block">Start a new demo</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-note">
+      <span>© 2026 Franco Trading. Academic demo project — not a real store.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const state = FrancoState.get();
+  const product = getProductById(state.productId);
+  const delivery = state.delivery || {};
+
+  if (product) {
+    document.getElementById("confirm-summary").innerHTML = `
+      <div class="summary-row"><span class="k">Gift</span><span class="v">${product.name}</span></div>
+      <div class="summary-row"><span class="k">Delivering to</span><span class="v">${delivery.fullName || "—"}</span></div>
+      <div class="summary-row"><span class="k">City / Town</span><span class="v">${delivery.city || "—"}</span></div>
+      <div class="summary-total"><span class="k">Amount (demo)</span><span class="v">GH₵20.00</span></div>
+    `;
+  }
+
+  document.getElementById("restart-link").addEventListener("click", () => {
+    FrancoState.clear();
+  });
+</script>
+</body>
+</html>
