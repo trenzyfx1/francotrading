@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delivery Details — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===========================================================
+   Franco Trading — Christmas Giveaway (Academic Demo)
+   =========================================================== */
+
+:root{
+  --navy-deep:   #0b1a3d;
+  --navy:        #0f2152;
+  --navy-light:  #1a2f68;
+  --gold:        #f4b740;
+  --gold-light:  #ffd97a;
+  --cream:       #fdf6e8;
+  --ink:         #10162b;
+  --muted:       #6b7390;
+  --line:        #e4e7f1;
+  --success:     #2e9e5b;
+  --danger:      #d8475f;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --shadow-soft: 0 16px 40px rgba(11,26,61,0.14);
+  --shadow-card: 0 6px 18px rgba(11,26,61,0.08);
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+html,body{ height:auto; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+input, select, textarea{ font-family:inherit; }
+
+.container{
+  width:100%;
+  max-width: 1140px;
+  margin:0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Top banner ---------- */
+.demo-banner{
+  background: var(--navy-deep);
+  color: var(--gold-light);
+  text-align:center;
+  font-size: 0.8rem;
+  padding: 7px 16px;
+  letter-spacing: .01em;
+}
+.demo-banner strong{ color:#fff; }
+
+/* ---------- Header ---------- */
+.site-header{
+  background: var(--navy);
+  color:#fff;
+  padding: 16px 0;
+}
+.site-header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 24px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size: 1.05rem;
+  letter-spacing: .01em;
+  color:#fff;
+}
+.brand .mark{
+  width:34px; height:34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--gold), #e08a2e);
+  display:flex; align-items:center; justify-content:center;
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-weight:700;
+  font-size:1.1rem;
+}
+.brand .name small{
+  display:block;
+  font-weight:600;
+  font-size: 0.62rem;
+  letter-spacing: .14em;
+  color: var(--gold-light);
+}
+.nav-links{
+  display:flex;
+  gap: 26px;
+  font-size: 0.92rem;
+  font-weight:600;
+}
+.nav-links a{ color: rgba(255,255,255,0.78); }
+.nav-links a.active{ color: var(--gold-light); }
+.trust-chip{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size: 0.78rem;
+  font-weight:700;
+  color: var(--gold-light);
+  white-space: nowrap;
+}
+@media (max-width: 760px){
+  .nav-links{ display:none; }
+}
+
+/* ---------- Hero / Teaser ---------- */
+.hero{
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(232,83,107,0.22), transparent 45%),
+    radial-gradient(ellipse at 15% 85%, rgba(78,158,109,0.18), transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(244,183,64,0.20), transparent 55%),
+    linear-gradient(180deg, var(--navy-deep), #152a63 55%, var(--navy-deep));
+  color:#fff;
+  padding: 0 0 70px;
+  position: relative;
+  overflow:hidden;
+}
+.lights-strip{
+  position:relative;
+  z-index:3;
+  padding-top: 2px;
+}
+.star-field{
+  position:absolute; inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 32% 68%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 52% 18%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 72% 48%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1.5px 1.5px at 88% 28%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 6% 78%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 94% 72%, rgba(255,255,255,0.5), transparent);
+  background-repeat: no-repeat;
+}
+.snowfall{
+  position:absolute; inset:0;
+  z-index:1;
+  overflow:hidden;
+  pointer-events:none;
+}
+.snowflake{
+  position:absolute;
+  top:-10px;
+  border-radius:50%;
+  background: rgba(255,255,255,0.8);
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes snow-fall{
+  0%{ transform: translate(0,-10px); opacity:0; }
+  8%{ opacity:0.9; }
+  100%{ transform: translate(var(--drift), 420px); opacity:0.2; }
+}
+.hero .container{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items:center;
+  padding-top: 40px;
+}
+.ribbon-eyebrow{
+  display:inline-block;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  color: var(--navy-deep);
+  font-weight:800;
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.hero h1{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 5.2vw, 4.1rem);
+  line-height: 1.0;
+  margin: 0 0 14px;
+  text-shadow: 0 6px 30px rgba(0,0,0,0.25);
+}
+.hero h1 em{
+  font-style: italic;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold) 60%, #e8536b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero p.lede{
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.82);
+  max-width: 46ch;
+  margin: 0 0 28px;
+}
+.countdown{
+  display:flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+.countdown .unit{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(244,183,64,0.35);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  min-width: 72px;
+  text-align:center;
+}
+.countdown .unit .num{
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight:600;
+  color: var(--gold-light);
+  font-variant-numeric: tabular-nums;
+}
+.countdown .unit .lbl{
+  font-size: 0.68rem;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,0.6);
+  margin-top: 2px;
+}
+
+.price-banner{
+  background: linear-gradient(135deg, #ffe39a, var(--gold) 55%, #e8536b);
+  border-radius: 20px;
+  padding: 20px 26px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 26px;
+  box-shadow: 0 16px 36px rgba(232,83,107,0.35);
+  transform: rotate(-1.4deg);
+  position: relative;
+}
+.price-banner::before{
+  content:"🎁";
+  position:absolute;
+  top:-16px; left:-14px;
+  font-size: 1.8rem;
+  transform: rotate(14deg);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+}
+.price-banner .label{
+  font-weight:800;
+  font-size: 0.95rem;
+  color: var(--navy-deep);
+}
+.price-banner .amount{
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  color: var(--navy-deep);
+  font-weight:600;
+}
+.price-banner .amount .was{
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight:700;
+  color: rgba(11,26,61,0.55);
+  text-decoration: line-through;
+  margin-right: 10px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  border:none;
+  border-radius: 999px;
+  padding: 15px 30px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor:pointer;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.btn-primary{
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  color: var(--navy-deep);
+  box-shadow: 0 10px 24px rgba(244,183,64,0.35);
+}
+.btn-primary:hover{ transform: translateY(-1px); }
+.btn-primary:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+.btn-block{ width:100%; }
+.btn-ghost{
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color:#fff;
+}
+
+.trust-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 22px;
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.trust-row .item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size: 0.84rem;
+  color: rgba(255,255,255,0.75);
+  font-weight:600;
+}
+.trust-row svg{ flex-shrink:0; color: var(--gold-light); }
+
+/* hero gift art */
+.hero-art{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height: 420px;
+}
+.hero-art .santa-layer{
+  position:absolute;
+  right: -4%;
+  top: 2%;
+  width: 62%;
+  max-width: 320px;
+  z-index: 2;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,0.35));
+}
+.hero-art .gift-layer{
+  position:absolute;
+  left: -2%;
+  bottom: -4%;
+  width: 56%;
+  max-width: 260px;
+  z-index: 1;
+}
+.hero-art .price-sticker{
+  position:absolute;
+  left: 50%;
+  top: 6%;
+  transform: translateX(-50%) rotate(-6deg);
+  z-index: 3;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  width: 108px; height: 108px;
+  border-radius: 50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 14px 30px rgba(244,183,64,0.45);
+  border: 3px dashed rgba(11,26,61,0.35);
+  text-align:center;
+  line-height: 1.1;
+}
+.hero-art .price-sticker small{
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.gift-stage{
+  position:relative;
+  width:100%;
+  max-width: 420px;
+  aspect-ratio: 1/1;
+}
+.gift-glow{
+  position:absolute; inset:8%;
+  background: radial-gradient(circle, rgba(244,183,64,0.35), transparent 65%);
+  filter: blur(6px);
+}
+
+/* ---------- Section (teaser body) ---------- */
+.section{
+  padding: 60px 0;
+}
+.section-head{
+  text-align:center;
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+.section-head .kicker{
+  color: var(--gold);
+  background: #fff3dc;
+  display:inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  margin-bottom: 12px;
+}
+.section-head h2{
+  font-family: var(--font-display);
+  font-weight:600;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  margin: 0 0 10px;
+  color: var(--navy-deep);
+}
+.section-head p{
+  color: var(--muted);
+  margin:0;
+}
+
+.product-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+@media (max-width: 920px){ .product-grid{ grid-template-columns: repeat(2,1fr);} }
+@media (max-width: 540px){ .product-grid{ grid-template-columns: 1fr;} }
+
+.product-card{
+  background:#fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow:hidden;
+  box-shadow: var(--shadow-card);
+  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  position: relative;
+}
+.product-card:hover{ transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+.product-card .art{
+  background:
+    radial-gradient(circle at 50% 38%, rgba(244,183,64,0.22), transparent 60%),
+    linear-gradient(160deg, #101f4c, #1a2f68 70%);
+  aspect-ratio: 4/3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 14px;
+  position: relative;
+}
+.product-card .art::after{
+  content:"";
+  position:absolute;
+  left:50%; bottom:10%;
+  transform: translateX(-50%);
+  width: 56%; height: 10px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+.product-card .art svg{ position:relative; z-index:1; }
+.product-card .body{ padding: 16px 18px 18px; }
+.product-card h3{
+  font-size: 1rem;
+  margin: 0 0 8px;
+  color: var(--navy-deep);
+}
+.product-card .prices{
+  display:flex;
+  align-items:baseline;
+  gap: 8px;
+}
+.product-card .was{
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.product-card .now{
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight:600;
+  color: var(--navy-deep);
+}
+.product-card .ribbon{
+  position:absolute; top:12px; right:12px;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold));
+  color: var(--navy-deep);
+  font-size: 0.68rem;
+  font-weight:800;
+  padding: 4px 9px;
+  border-radius: 999px;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* selectable variant (items.html) */
+.product-card.selectable{ cursor:pointer; border-width:2px; }
+.product-card.selectable.is-selected{
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(244,183,64,0.18), var(--shadow-card);
+}
+.product-card .select-mark{
+  position:absolute; top:12px; left:12px;
+  width:26px;height:26px;
+  border-radius:50%;
+  background:#fff;
+  border: 2px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  transition: all .15s ease;
+}
+.product-card.is-selected .select-mark{
+  background: var(--navy-deep);
+  border-color: var(--navy-deep);
+}
+.product-card .select-mark svg{
+  opacity:0;
+  transform: scale(.6);
+  transition: all .15s ease;
+  color:#fff;
+}
+.product-card.is-selected .select-mark svg{ opacity:1; transform:scale(1); }
+
+.festive-strip{
+  background: var(--navy-deep);
+  line-height: 0;
+  padding-bottom: 6px;
+}
+
+/* ---------- Stepper ---------- */
+.stepper{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 10px;
+  padding: 22px 0 8px;
+}
+.stepper .step{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size: 0.85rem;
+  font-weight:700;
+  color: var(--muted);
+}
+.stepper .circ{
+  width:28px;height:28px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;
+  border: 2px solid var(--line);
+  font-size: 0.82rem;
+}
+.stepper .step.done .circ{ background: var(--success); border-color: var(--success); color:#fff; }
+.stepper .step.current .circ{ background: var(--navy-deep); border-color: var(--navy-deep); color:#fff; }
+.stepper .step.current{ color: var(--navy-deep); }
+.stepper .bar{
+  width:48px; height:2px; background: var(--line);
+}
+@media (max-width:560px){
+  .stepper .step span.label{ display:none; }
+  .stepper .bar{ width:24px; }
+}
+
+/* page body with cream bg for non-hero pages */
+.page-body{
+  background: var(--cream);
+  min-height: 60vh;
+  padding: 28px 0 60px;
+}
+
+.layout-two{
+  display:grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 24px;
+  align-items:start;
+}
+@media (max-width: 860px){ .layout-two{ grid-template-columns:1fr; } }
+
+.panel{
+  background:#fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow:hidden;
+}
+.panel-head{
+  background: var(--navy-deep);
+  color:#fff;
+  padding: 14px 20px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-weight:800;
+  font-size: 0.95rem;
+}
+.panel-body{ padding: 20px; }
+
+.selected-gift{
+  display:flex;
+  align-items:center;
+  gap: 16px;
+}
+.selected-gift .art{
+  width: 92px; height:92px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(244,183,64,0.22), transparent 60%),
+    linear-gradient(160deg, #101f4c, #1a2f68 70%);
+  border-radius: var(--radius-md);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.selected-gift .art svg{ width:70px; height:70px; }
+.selected-gift h3{ margin: 0 0 4px; font-size: 1.05rem; color: var(--navy-deep); }
+.selected-gift .was{ font-size:0.85rem; color:var(--muted); text-decoration:line-through; }
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  padding: 10px 0;
+  font-size: 0.92rem;
+  border-bottom: 1px dashed var(--line);
+}
+.summary-row:last-of-type{ border-bottom:none; }
+.summary-row .k{ color: var(--muted); }
+.summary-row .v{ font-weight:700; }
+.summary-total{
+  display:flex; justify-content:space-between;
+  align-items:baseline;
+  margin-top: 10px;
+  padding-top: 14px;
+  border-top: 2px solid var(--navy-deep);
+}
+.summary-total .k{ font-weight:800; color: var(--navy-deep); }
+.summary-total .v{
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight:600;
+  color: var(--navy-deep);
+}
+.pay-methods{
+  display:flex; gap:10px; margin-top: 14px;
+  align-items:center;
+}
+
+/* ---------- Forms ---------- */
+.form-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field.full{ grid-column: 1 / -1; }
+.field label{
+  font-size: 0.82rem;
+  font-weight:700;
+  color: var(--navy-deep);
+}
+.field label .opt{ color: var(--muted); font-weight:600; }
+.field input, .field select, .field textarea{
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  font-size: 0.94rem;
+  color: var(--ink);
+  background:#fcfcfe;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none;
+  border-color: var(--navy-deep);
+  box-shadow: 0 0 0 3px rgba(15,33,82,0.1);
+}
+.field .error{
+  font-size: 0.76rem;
+  color: var(--danger);
+  min-height: 1em;
+}
+.field.has-error input, .field.has-error select{ border-color: var(--danger); }
+
+.safe-note{
+  display:flex;
+  align-items:flex-start;
+  gap: 10px;
+  background: #eef9f1;
+  border: 1px solid #cdeedb;
+  color: #1d6b3f;
+  font-size: 0.83rem;
+  font-weight:600;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  margin-top: 16px;
+}
+.safe-note svg{ flex-shrink:0; margin-top:1px; }
+
+/* ---------- Card preview (demo payment) ---------- */
+.card-stage{
+  display:flex;
+  justify-content:center;
+  margin-bottom: 22px;
+  perspective: 1000px;
+}
+.demo-card{
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1.586/1;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-light) 55%, #203a7d 100%);
+  color:#fff;
+  padding: 22px 24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow: var(--shadow-soft);
+  position:relative;
+  overflow:hidden;
+  transition: transform .4s ease;
+  transform-style: preserve-3d;
+}
+.demo-card::after{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(circle at 85% 0%, rgba(244,183,64,0.25), transparent 55%);
+}
+.demo-card.flipped{ transform: rotateY(180deg); }
+.demo-card .face{ position:relative; z-index:1; }
+.demo-card .back-face{
+  position:absolute; inset:0;
+  transform: rotateY(180deg);
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  padding: 0;
+}
+.demo-card .magstripe{ width:100%; height:38px; background:#0a0a0a; margin-top:18px; }
+.demo-card .cvv-strip{
+  margin: 16px 24px 0 auto;
+  background:#fff;
+  color:#111;
+  font-family: monospace;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  border-radius:4px;
+  width: 70px;
+  text-align:right;
+}
+.demo-card .top-row{
+  display:flex; justify-content:space-between; align-items:flex-start;
+}
+.demo-card .chip{
+  width: 42px; height:32px;
+  border-radius:6px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+}
+.demo-card .brand-mark{
+  font-family: var(--font-display);
+  font-weight:600;
+  font-size: 1.1rem;
+  color: var(--gold-light);
+}
+.demo-card .number{
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin: 18px 0 14px;
+}
+.demo-card .bottom-row{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  font-size: 0.78rem;
+  text-transform:uppercase;
+  letter-spacing: .04em;
+}
+.demo-card .bottom-row .name{ font-size: 0.95rem; letter-spacing: .03em; }
+.demo-card .bottom-row .exp-lbl{ font-size:0.6rem; opacity:.7; display:block; }
+
+.demo-flag{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background: #fff6e4;
+  border: 1px solid #f0d9a3;
+  color: #8a6416;
+  font-size: 0.78rem;
+  font-weight:700;
+  padding: 9px 13px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+}
+
+/* ---------- Processing page ---------- */
+.processing-wrap{
+  min-height: 70vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(180deg, var(--navy-deep), #122659);
+}
+.processing-card{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(244,183,64,0.25);
+  border-radius: var(--radius-lg);
+  padding: 48px 44px;
+  text-align:center;
+  color:#fff;
+  max-width: 420px;
+}
+.spinner{
+  width: 58px; height:58px;
+  margin: 0 auto 26px;
+  border-radius:50%;
+  border: 4px solid rgba(244,183,64,0.2);
+  border-top-color: var(--gold);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+.processing-card h2{
+  font-family: var(--font-display);
+  font-weight:600;
+  margin: 0 0 8px;
+}
+.processing-card p{ color: rgba(255,255,255,0.72); margin:0 0 22px; }
+.progress-track{
+  height: 8px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 999px;
+  transition: width 0.2s linear;
+}
+.processing-pct{
+  margin-top:10px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Confirmation page ---------- */
+.confirm-wrap{
+  min-height: 65vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.confirm-card{
+  background:#fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 44px 40px;
+  max-width: 460px;
+  text-align:center;
+}
+.check-badge{
+  width:64px;height:64px;
+  border-radius:50%;
+  background: #e8f8ee;
+  color: var(--success);
+  display:flex;align-items:center;justify-content:center;
+  margin: 0 auto 18px;
+}
+.confirm-card h2{
+  font-family: var(--font-display);
+  font-weight:600;
+  margin: 0 0 8px;
+  color: var(--navy-deep);
+}
+.confirm-card p.sub{ color: var(--muted); margin: 0 0 22px; }
+.confirm-summary{
+  text-align:left;
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer{
+  background: var(--navy-deep);
+  color: rgba(255,255,255,0.65);
+  padding: 40px 0 22px;
+  font-size: 0.86rem;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 28px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+@media (max-width:760px){ .footer-grid{ grid-template-columns: 1fr 1fr; } }
+.footer-grid h4{
+  color:#fff;
+  font-size: 0.82rem;
+  letter-spacing:.03em;
+  margin: 0 0 14px;
+}
+.footer-grid ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+.footer-grid a:hover{ color: var(--gold-light); }
+.footer-note{
+  padding-top: 18px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap: 10px;
+  font-size: 0.78rem;
+}
+.footer-safety{
+  margin-top: 4px;
+  color: var(--gold-light);
+  font-weight:600;
+}
+
+/* visually hidden util */
+.sr-only{
+  position:absolute; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden;
+  clip: rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+:focus-visible{ outline: 3px solid var(--navy-light); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <strong>Academic demo</strong> — no real payments, accounts, or data are processed.
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">F</span>
+      <span class="name">FRANCO TRADING ENTERPRISE<small>SECURE &amp; TRUSTED</small></span>
+    </div>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="items.html" class="active">Giveaway</a>
+      <a href="index.html#faqs">FAQs</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<div class="festive-strip" id="lights-strip"></div>
+
+<div class="stepper">
+  <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">Select Gift</span></div>
+  <div class="bar"></div>
+  <div class="step current"><span class="circ">2</span><span class="label">Delivery Details</span></div>
+  <div class="bar"></div>
+  <div class="step"><span class="circ">3</span><span class="label">Payment</span></div>
+</div>
+
+<main class="page-body">
+  <div class="container">
+    <div class="layout-two">
+
+      <!-- left column: gift + summary -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="panel">
+          <div class="panel-head">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 8l9-5 9 5M12 3v5"/></svg>
+            Your Selected Gift
+          </div>
+          <div class="panel-body">
+            <div class="selected-gift" id="gift-box"><!-- filled by JS --></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+            Payment Summary
+          </div>
+          <div class="panel-body">
+            <div class="summary-row"><span class="k">Gift value</span><span class="v" id="sum-was"></span></div>
+            <div class="summary-row"><span class="k">Giveaway price</span><span class="v">GH₵20.00</span></div>
+            <div class="summary-total"><span class="k">Total due</span><span class="v">GH₵20.00</span></div>
+            <div class="pay-methods">
+              <span style="font-size:0.78rem;color:var(--muted);font-weight:700;">Pay securely with:</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right column: delivery form -->
+      <div class="panel">
+        <div class="panel-head">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+          Delivery Details
+        </div>
+        <div class="panel-body">
+          <p style="margin:0 0 18px;color:var(--muted);font-size:0.9rem;">Please provide your correct delivery information to receive your gift.</p>
+
+          <form id="delivery-form" novalidate>
+            <div class="form-grid">
+              <div class="field full" data-field="fullName">
+                <label for="fullName">Full name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name">
+                <div class="error"></div>
+              </div>
+
+              <div class="field" data-field="phone">
+                <label for="phone">Phone number</label>
+                <input type="tel" id="phone" placeholder="Enter your mobile number" autocomplete="tel">
+                <div class="error"></div>
+              </div>
+
+              <div class="field" data-field="region">
+                <label for="region">Region</label>
+                <select id="region">
+                  <option value="">Select your region</option>
+                  <option>Greater Accra</option>
+                  <option>Ashanti</option>
+                  <option>Western</option>
+                  <option>Eastern</option>
+                  <option>Central</option>
+                  <option>Volta</option>
+                  <option>Northern</option>
+                  <option>Bono</option>
+                  <option>Other</option>
+                </select>
+                <div class="error"></div>
+              </div>
+
+              <div class="field" data-field="city">
+                <label for="city">City / Town</label>
+                <input type="text" id="city" placeholder="Enter your city or town">
+                <div class="error"></div>
+              </div>
+
+              <div class="field" data-field="digitalAddress">
+                <label for="digitalAddress">Digital address</label>
+                <input type="text" id="digitalAddress" placeholder="e.g. GA-183-9921">
+                <div class="error"></div>
+              </div>
+
+              <div class="field full" data-field="homeAddress">
+                <label for="homeAddress">Home address</label>
+                <input type="text" id="homeAddress" placeholder="Enter your house address">
+                <div class="error"></div>
+              </div>
+
+              <div class="field full">
+                <label for="instructions">Delivery instructions <span class="opt">(optional)</span></label>
+                <textarea id="instructions" rows="2" placeholder="Any special instructions?"></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+              Submit &amp; Pay GH₵20.00
+            </button>
+
+            <div class="safe-note">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+              Your information is safe and secure. Franco Trading will never ask for your card PIN or one-time password over the phone.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-note">
+      <span>© 2026 Franco Trading. Academic demo project — not a real store.</span>
+      <span class="footer-safety">Don't share your details anywhere else.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================
+   Franco Trading — shared product data + state helpers
+   This is an academic frontend demo. No data leaves the browser.
+   =========================================================== */
+
+const PRODUCTS = [
+  { id: "samsung-galaxy-a17", name: "Samsung Galaxy A17", was: "GH₵2,200", icon: "phone" },
+  { id: "air-conditioner", name: "Air Conditioner", was: "GH₵3,300", icon: "ac" },
+  { id: "ps5-pro", name: "PlayStation 5 Pro", was: "GH₵8,000", icon: "laptop" },
+  { id: "hp-chromebook", name: "Laptop HP Chromebook", was: "GH₵4,500", icon: "chromebook" }
+];
+
+const GIVEAWAY_PRICE = "GH₵20.00";
+
+/* ---------- simple sessionStorage state ---------- */
+const FrancoState = {
+  key: "franco_demo_state",
+
+  get(){
+    try{
+      return JSON.parse(sessionStorage.getItem(this.key)) || {};
+    }catch(e){ return {}; }
+  },
+  set(patch){
+    const current = this.get();
+    const next = Object.assign({}, current, patch);
+    sessionStorage.setItem(this.key, JSON.stringify(next));
+    return next;
+  },
+  clear(){
+    sessionStorage.removeItem(this.key);
+  }
+};
+
+function getProductById(id){
+  return PRODUCTS.find(p => p.id === id);
+}
+
+/* ---------- product illustrations (inline SVG, shaded/gradient — no external images) ---------- */
+function productIconSVG(icon){
+  const icons = {
+    laptop: `<svg width="120" height="120" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lap-screen" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#5d7ee8"/><stop offset="100%" stop-color="#1a2f68"/>
+        </linearGradient>
+        <linearGradient id="lap-body" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a2f68"/><stop offset="100%" stop-color="#0b1a3d"/>
+        </linearGradient>
+        <linearGradient id="lap-base" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffd97a"/><stop offset="100%" stop-color="#e8a52e"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="80" cy="138" rx="54" ry="7" fill="#0b1a3d" opacity="0.12"/>
+      <rect x="40" y="30" width="80" height="58" rx="5" fill="url(#lap-body)"/>
+      <rect x="46" y="36" width="68" height="46" rx="2" fill="url(#lap-screen)"/>
+      <rect x="52" y="42" width="40" height="4" rx="2" fill="#ffffff" opacity="0.55"/>
+      <rect x="52" y="50" width="26" height="4" rx="2" fill="#ffd97a" opacity="0.85"/>
+      <path d="M26 92h108l10 14a6 6 0 01-5 9H21a6 6 0 01-5-9z" fill="url(#lap-base)"/>
+      <rect x="68" y="92" width="24" height="4" rx="2" fill="#0b1a3d" opacity="0.3"/>
+      <circle cx="128" cy="26" r="13" fill="#d8475f"/>
+      <path d="M122 26l4 4 8-8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+
+    chromebook: `<svg width="120" height="120" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cb-screen" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffe3a3"/><stop offset="100%" stop-color="#f4b740"/>
+        </linearGradient>
+        <linearGradient id="cb-body" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#28407e"/><stop offset="100%" stop-color="#0f2152"/>
+        </linearGradient>
+        <linearGradient id="cb-base" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffd97a"/><stop offset="100%" stop-color="#e8a52e"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="80" cy="138" rx="54" ry="7" fill="#0b1a3d" opacity="0.12"/>
+      <rect x="38" y="28" width="84" height="60" rx="5" fill="url(#cb-body)"/>
+      <rect x="44" y="34" width="72" height="48" rx="2" fill="url(#cb-screen)"/>
+      <circle cx="80" cy="58" r="11" fill="#0f2152"/>
+      <circle cx="80" cy="58" r="4.2" fill="#d8475f"/>
+      <path d="M24 92h112l10 14a6 6 0 01-5 9H19a6 6 0 01-5-9z" fill="url(#cb-base)"/>
+      <circle cx="128" cy="26" r="13" fill="#2e9e5b"/>
+      <path d="M122 26l4 4 8-8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+
+    phone: `<svg width="120" height="120" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ph-screen" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#6d8ef0"/><stop offset="100%" stop-color="#1a2f68"/>
+        </linearGradient>
+        <linearGradient id="ph-body" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#28407e"/><stop offset="100%" stop-color="#0b1a3d"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="80" cy="140" rx="36" ry="6" fill="#0b1a3d" opacity="0.12"/>
+      <rect x="54" y="14" width="52" height="118" rx="13" fill="url(#ph-body)"/>
+      <rect x="59" y="22" width="42" height="92" rx="4" fill="url(#ph-screen)"/>
+      <rect x="68" y="30" width="24" height="3" rx="1.5" fill="#fff" opacity="0.5"/>
+      <rect x="68" y="92" width="24" height="12" rx="3" fill="#ffd97a" opacity="0.9"/>
+      <circle cx="80" cy="123" r="3.4" fill="#0b1a3d" opacity="0.5"/>
+      <rect x="70" y="18" width="20" height="3" rx="1.5" fill="#0b1a3d"/>
+      <circle cx="120" cy="30" r="12" fill="#d8475f"/>
+      <path d="M114 30l4 4 8-8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+
+    ac: `<svg width="120" height="120" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ac-body" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e7ecfb"/>
+        </linearGradient>
+        <linearGradient id="ac-mist" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#bcd4ff" stop-opacity="0.9"/><stop offset="100%" stop-color="#bcd4ff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="80" cy="134" rx="56" ry="7" fill="#0b1a3d" opacity="0.1"/>
+      <rect x="18" y="44" width="124" height="42" rx="12" fill="url(#ac-body)" stroke="#1a2f68" stroke-width="2"/>
+      <rect x="30" y="56" width="60" height="4" rx="2" fill="#1a2f68" opacity="0.65"/>
+      <rect x="30" y="66" width="42" height="4" rx="2" fill="#1a2f68" opacity="0.4"/>
+      <circle cx="118" cy="62" r="9" fill="#f4b740"/>
+      <path d="M114 62l3 3 6-6" stroke="#0b1a3d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30 90q6 20-2 36M54 90q6 22-4 38M78 90q6 20-2 36" stroke="url(#ac-mist)" stroke-width="7" fill="none" stroke-linecap="round"/>
+    </svg>`
+  };
+  return icons[icon] || "";
+}
+
+/* ---------- festive decoration SVGs (Santa, string lights, gift stack) ---------- */
+function santaIllustrationSVG(){
+  return `<svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of Santa Claus pointing">
+    <defs>
+      <linearGradient id="santa-suit" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#e8536b"/><stop offset="100%" stop-color="#c22e46"/>
+      </linearGradient>
+      <linearGradient id="santa-skin" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f3c3a0"/><stop offset="100%" stop-color="#e3a178"/>
+      </linearGradient>
+      <radialGradient id="santa-glow" cx="50%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#ffe39a" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#ffe39a" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="150" cy="150" r="148" fill="url(#santa-glow)"/>
+    <!-- body / suit -->
+    <path d="M70 340V236c0-46 36-84 80-84s80 38 80 84v104z" fill="url(#santa-suit)"/>
+    <rect x="70" y="236" width="160" height="26" fill="#f6f6f6"/>
+    <rect x="70" y="236" width="160" height="26" fill="#ffffff" opacity="0.5"/>
+    <circle cx="150" cy="249" r="13" fill="#2b2b2b"/>
+    <circle cx="150" cy="249" r="7" fill="#f4b740"/>
+    <!-- arm pointing -->
+    <path d="M222 220c26-6 46-28 54-54" stroke="url(#santa-suit)" stroke-width="30" stroke-linecap="round"/>
+    <circle cx="282" cy="160" r="17" fill="url(#santa-skin)"/>
+    <path d="M268 152l10-8M268 168l10 8M285 148v26" stroke="#c6835b" stroke-width="2.4" stroke-linecap="round"/>
+    <!-- head -->
+    <circle cx="150" cy="120" r="56" fill="url(#santa-skin)"/>
+    <path d="M100 120a50 50 0 01100 0c0 6-6 8-10 4-10-10-28-16-45-16s-35 6-45 16c-4 4-10 2-10-4z" fill="#f6f6f6"/>
+    <path d="M96 150c0 34 24 54 54 54s54-20 54-54c-14 14-34 20-54 20s-40-6-54-20z" fill="#f6f6f6"/>
+    <circle cx="124" cy="112" r="6" fill="#2b2b2b"/>
+    <circle cx="176" cy="112" r="6" fill="#2b2b2b"/>
+    <path d="M110 100q14-10 28 0M162 100q14-10 28 0" stroke="#8a5a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="150" cy="132" r="9" fill="#e38a6b"/>
+    <path d="M122 148q28 20 56 0" stroke="#7a4a30" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- hat -->
+    <path d="M96 78c10-40 50-58 60-58 36 40 40 60 36 70-28-16-66-16-96-12z" fill="url(#santa-suit)"/>
+    <circle cx="158" cy="20" r="12" fill="#f6f6f6"/>
+    <rect x="92" y="70" width="108" height="20" rx="10" fill="#f6f6f6"/>
+  </svg>`;
+}
+
+function stringLightsSVG(){
+  const colors = ["#f4b740","#e8536b","#4e9e6d","#5d7ee8","#f4b740","#e8536b","#4e9e6d","#5d7ee8","#f4b740","#e8536b"];
+  let bulbs = "";
+  const n = 10;
+  for (let i=0;i<n;i++){
+    const x = 20 + i * ((1160)/(n-1));
+    const dip = Math.sin((i/(n-1))*Math.PI) * 22;
+    bulbs += `<circle cx="${x}" cy="${20+dip}" r="6" fill="${colors[i]}"><animate attributeName="opacity" values="1;0.35;1" dur="${1.6 + (i%3)*0.4}s" repeatCount="indefinite"/></circle>`;
+  }
+  let wire = "M10 8 ";
+  for (let i=0;i<n;i++){
+    const x = 20 + i * ((1160)/(n-1));
+    const dip = Math.sin((i/(n-1))*Math.PI) * 22;
+    wire += `L${x} ${8+dip} `;
+  }
+  return `<svg viewBox="0 0 1180 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:44px;display:block;">
+    <path d="${wire}" stroke="#263a6e" stroke-width="2" fill="none"/>
+    ${bulbs}
+  </svg>`;
+}
+
+function giftStackSVG(){
+  return `<svg viewBox="0 0 400 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gift-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2a4489"/><stop offset="100%" stop-color="#15245a"/></linearGradient>
+      <linearGradient id="gift-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8536b"/><stop offset="100%" stop-color="#b92f48"/></linearGradient>
+      <linearGradient id="gift-ribbon" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe39a"/><stop offset="100%" stop-color="#f4b740"/></linearGradient>
+    </defs>
+    <ellipse cx="200" cy="352" rx="150" ry="18" fill="#000" opacity="0.18"/>
+    <rect x="70" y="190" width="130" height="130" rx="8" fill="url(#gift-a)"/>
+    <rect x="70" y="190" width="130" height="26" fill="url(#gift-ribbon)"/>
+    <rect x="124" y="190" width="22" height="130" fill="url(#gift-ribbon)"/>
+    <path d="M118 190c-10-20 4-34 18-26 8 5 8 16 8 26zM146 190c10-20-4-34-18-26-8 5-8 16-8 26z" fill="url(#gift-ribbon)"/>
+    <rect x="190" y="128" width="150" height="150" rx="8" fill="url(#gift-b)"/>
+    <rect x="190" y="128" width="150" height="30" fill="url(#gift-ribbon)"/>
+    <rect x="254" y="128" width="22" height="150" fill="url(#gift-ribbon)"/>
+    <path d="M247 128c-12-24 4-40 20-30 9 6 9 18 9 30zM277 128c12-24-4-40-20-30-9 6-9 18-9 30z" fill="url(#gift-ribbon)"/>
+    <circle cx="265" cy="108" r="3" fill="#ffe39a"/>
+  </svg>`;
+}
+
+function snowflakeLayerHTML(count){
+  let out = "";
+  for (let i=0;i<count;i++){
+    const left = Math.random()*100;
+    const size = 3 + Math.random()*5;
+    const dur = 8 + Math.random()*10;
+    const delay = Math.random()*-20;
+    const drift = (Math.random()*60-30).toFixed(0);
+    out += `<span class="snowflake" style="left:${left}%;width:${size}px;height:${size}px;animation-duration:${dur}s;animation-delay:${delay}s;--drift:${drift}px;"></span>`;
+  }
+  return out;
+}
+
+/* ---------- 24h rolling countdown ---------- */
+function startRollingCountdown(targetEl){
+  const DURATION = 24 * 60 * 60 * 1000; // 24 hours
+  const STORE_KEY = "franco_countdown_start";
+
+  let start = parseInt(localStorage.getItem(STORE_KEY), 10);
+  const now = Date.now();
+  if (!start || now - start > DURATION) {
+    start = now;
+    localStorage.setItem(STORE_KEY, String(start));
+  }
+
+  function render(){
+    const elapsed = (Date.now() - start) % DURATION;
+    const remaining = DURATION - elapsed;
+
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.floor((remaining % 3600000) / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+
+    const pad = n => String(n).padStart(2, "0");
+    if (targetEl.hours) targetEl.hours.textContent = pad(h);
+    if (targetEl.mins) targetEl.mins.textContent = pad(m);
+    if (targetEl.secs) targetEl.secs.textContent = pad(s);
+  }
+
+  render();
+  return setInterval(render, 1000);
+}
+
+/* ---------- card number formatting (demo only, never persisted beyond page) ---------- */
+function formatCardNumber(value){
+  const digits = value.replace(/\D/g, "").slice(0, 16);
+  return digits.replace(/(.{4})/g, "$1 ").trim();
+}
+function formatExpiry(value){
+  const digits = value.replace(/\D/g, "").slice(0, 4);
+  if (digits.length >= 3) return digits.slice(0,2) + " / " + digits.slice(2);
+  return digits;
+}
+function maskCardForDisplay(formatted){
+  if (!formatted) return "•••• •••• •••• ••••";
+  const groups = formatted.split(" ");
+  while (groups.length < 4) groups.push("••••");
+  return groups.map((g,i) => g.padEnd(4,"•")).join(" ");
+}
+
+</script>
+<script>
+  document.getElementById("lights-strip").innerHTML = stringLightsSVG();
+
+  const state = FrancoState.get();
+  const product = getProductById(state.productId);
+
+  if (!product) {
+    window.location.replace("items.html");
+    throw new Error("No selected gift was found.");
+  }
+
+  document.getElementById("gift-box").innerHTML = `
+    <div class="art">${productIconSVG(product.icon)}</div>
+    <div>
+      <h3>${product.name}</h3>
+      <span class="was">${product.was}</span>
+    </div>
+  `;
+  document.getElementById("sum-was").textContent = product.was;
+
+  const form = document.getElementById("delivery-form");
+  const required = ["fullName","phone","region","city","digitalAddress","homeAddress"];
+
+  function showError(id, msg){
+    const field = document.querySelector(`[data-field="${id}"]`);
+    field.classList.toggle("has-error", !!msg);
+    field.querySelector(".error").textContent = msg || "";
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
+
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        showError(id, "This field is required");
+        valid = false;
+      } else {
+        showError(id, "");
+      }
+    });
+
+    const phoneVal = document.getElementById("phone").value.trim();
+    if (phoneVal && phoneVal.replace(/\D/g,"").length < 9) {
+      showError("phone", "Enter a valid phone number");
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    FrancoState.set({
+      delivery: {
+        fullName: document.getElementById("fullName").value.trim(),
+        phone: phoneVal,
+        region: document.getElementById("region").value,
+        city: document.getElementById("city").value.trim(),
+        digitalAddress: document.getElementById("digitalAddress").value.trim(),
+        homeAddress: document.getElementById("homeAddress").value.trim(),
+        instructions: document.getElementById("instructions").value.trim()
+      }
+    });
+
+    window.location.href = "payment.html";
+  });
+</script>
+</body>
+</html>

