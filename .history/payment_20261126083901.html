@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ExpressPay Checkout — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<!-- REAL OCR LIBRARY -->
+<script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+
+<style>
+/* ===========================================================
+   Franco Trading — ExpressPay Real Camera & OCR Checkout
+   =========================================================== */
+
+:root{
+  --navy-deep:   #0b1a3d;
+  --navy:        #0f2152;
+  --gold:        #f4b740;
+  --gold-light:  #ffd97a;
+  --cream:       #fdf6e8;
+  --ink:         #10162b;
+  --muted:       #6b7390;
+  --line:        #e4e7f1;
+  --success:     #2e9e5b;
+  --danger:      #d8475f;
+  --ep-blue:     #0088e8;
+  --ep-orange:   #f47b20;
+  
+  /* Teal color from your reference image */
+  --teal-dark:   #007f7b; 
+  --teal-light:  #e0f2f1;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-soft: 0 16px 40px rgba(11,26,61,0.14);
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: #f4f6f9;
+  -webkit-font-smoothing: antialiased;
+}
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; }
+.container{ width:100%; max-width: 800px; margin:0 auto; padding: 0 24px; }
+
+/* ---------- ExpressPay Header ---------- */
+.express-header {
+  background: #fff; border-bottom: 1px solid var(--line); padding: 18px 0;
+}
+.express-header .container { display: flex; align-items: center; justify-content: space-between; }
+.express-logo {
+  display: flex; align-items: center; font-size: 2rem; font-weight: 800;
+  letter-spacing: -1.5px; font-style: italic; position: relative;
+}
+.express-logo .text-blue { color: var(--ep-blue); }
+.express-logo .text-orange { color: var(--ep-orange); }
+.express-logo svg { position: absolute; right: 10px; top: -2px; width: 60px; height: 20px; stroke: var(--ep-blue); stroke-width: 3; fill: none; stroke-linecap: round; }
+.secure-badge { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--success); background: #e8f8ee; padding: 6px 12px; border-radius: 99px; }
+
+/* ---------- Main Content ---------- */
+.checkout-body { padding: 40px 0 80px; min-height: 80vh; }
+.checkout-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); overflow: hidden; }
+.checkout-header { background: var(--navy-deep); color: #fff; padding: 24px; text-align: center; }
+.checkout-header h2 { font-family: var(--font-display); font-weight: 600; margin: 0 0 4px; font-size: 1.6rem; }
+.checkout-header p { color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem; }
+.checkout-summary { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--cream); border-bottom: 1px dashed var(--line); }
+.checkout-summary .amount { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--navy-deep); }
+
+/* ---------- Initial Camera Trigger ---------- */
+.camera-trigger { padding: 60px 24px; text-align: center; }
+.camera-box {
+  width: 100%; max-width: 480px; aspect-ratio: 1.586/1; margin: 0 auto; background: #f8f9fc;
+  border: 3px dashed #cbd5e1; border-radius: 20px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;
+}
+.camera-box:hover { background: #f1f5f9; border-color: var(--ep-blue); }
+.camera-box .icon-cam { width: 64px; height: 64px; background: var(--ep-blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0,136,232,0.3); }
+.camera-box h3 { margin: 0 0 8px; font-size: 1.2rem; color: var(--navy-deep); }
+.camera-box p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Modal / Camera UI ---------- */
+.camera-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; align-items: center; justify-content: center; }
+.camera-modal.active { display: flex; }
+.camera-container { width: 100%; max-width: 600px; background: #000; border-radius: 16px; overflow: hidden; position: relative; }
+.camera-video-wrapper { width: 100%; aspect-ratio: 1.586/1; background: #111; position: relative; display: flex; align-items: center; justify-content: center; }
+#camera-feed { width: 100%; height: 100%; object-fit: cover; }
+.card-overlay { position: absolute; width: 85%; height: 85%; border: 2px dashed rgba(255,255,255,0.6); border-radius: 12px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.6); }
+.card-overlay::after { content: "ALIGN CARD HERE"; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+.camera-captured-img { display: none; width: 100%; height: 100%; object-fit: cover; }
+.camera-controls { padding: 20px; text-align: center; background: #1a1a1a; }
+.camera-instruction { color: #fff; font-weight: 600; margin-bottom: 16px; font-size: 1.1rem; }
+.capture-btn { width: 70px; height: 70px; border-radius: 50%; border: 4px solid #fff; background: rgba(255,255,255,0.2); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.1s; }
+.capture-btn:active { transform: scale(0.95); }
+.capture-btn::after { content: ""; width: 50px; height: 50px; background: #fff; border-radius: 50%; }
+
+/* ---------- Form Section (Post-Scan) ---------- */
+.bank-card-section { display: none; padding: 30px 24px 40px; max-width: 480px; margin: 0 auto; animation: fadeIn 0.5s ease forwards; }
+.bank-card-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Header matching the teal reference */
+.bank-card-header {
+  background: var(--teal-light);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.bank-card-title { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; color: var(--ink); }
+.radio-circle { width: 20px; height: 20px; border-radius: 50%; background: var(--teal-dark); border: 4px solid #fff; box-shadow: 0 0 0 1px var(--teal-dark); }
+
+/* The locked inputs */
+.input-group { margin-bottom: 18px; }
+.input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.locked-input {
+  width: 100%;
+  padding: 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-family: monospace;
+  font-weight: 600;
+  color: var(--ink);
+  background: #f9fafc; /* Slightly grayed out to show it's locked */
+  letter-spacing: 1px;
+  outline: none;
+  cursor: not-allowed;
+}
+
+/* Row for Expiry and CVV */
+.split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Toggle Switch */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; }
+.toggle-label { font-weight: 700; font-size: 1rem; color: var(--ink); }
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--teal-dark); }
+input:checked + .slider:before { transform: translateX(22px); }
+
+/* Confirmation Box */
+.confirmation-box {
+  margin-top: 24px;
+  background: #f8f9fc;
+  border: 1px dashed var(--muted);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+}
+.confirmation-box h4 { margin: 0 0 12px; color: var(--navy-deep); font-size: 1.1rem; }
+.confirm-buttons { display: flex; gap: 12px; }
+.btn-confirm-yes { background: var(--teal-dark); color: #fff; flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: 700; }
+.btn-confirm-no { background: #fff; color: var(--danger); border: 1px solid var(--danger); flex: 1; padding: 12px; border-radius: 8px; font-weight: 700; }
+
+/* Security Badge */
+.security-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: var(--success);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Loading Overlay */
+.ocr-loading { display: none; text-align: center; padding: 40px 20px; }
+.ocr-loading.active { display: block; }
+.spinner { width: 44px; height: 44px; border: 4px solid #e2e8f0; border-top-color: var(--ep-blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Buttons ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 999px; padding: 16px 28px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.15s; width: 100%; margin-top: 20px; }
+.btn-orange { background: var(--ep-orange); color: #fff; box-shadow: 0 8px 20px rgba(244,123,32,0.3); }
+.btn-orange:hover { transform: translateY(-1px); }
+.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
+.site-footer { background: var(--navy-deep); color: rgba(255,255,255,0.65); padding: 30px 0; font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="express-header">
+  <div class="container">
+    <div class="express-logo">
+      <span class="text-blue">express</span><span class="text-orange">Pay</span>
+      <svg viewBox="0 0 100 20"><path d="M 5 15 Q 50 20 95 5" /><path d="M 85 2 L 95 5 L 88 12" /></svg>
+    </div>
+    <div class="secure-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      Secure Connection
+    </div>
+  </div>
+</header>
+
+<main class="checkout-body">
+  <div class="container">
+    <div class="checkout-card">
+      <div class="checkout-header">
+        <h2>Scan Card to Pay</h2>
+        <p>Use your camera to securely capture your card details</p>
+      </div>
+      
+      <div class="checkout-summary">
+        <span style="color: var(--muted); font-weight: 600;">Amount Due (Franco Trading)</span>
+        <span class="amount">GH₵20.00</span>
+      </div>
+
+      <!-- Initial Camera Trigger -->
+      <div class="camera-trigger" id="cameraTrigger">
+        <div class="camera-box" onclick="openCameraModal()">
+          <div class="icon-cam">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <h3>Tap to Open Camera</h3>
+          <p>We will guide you to snap the front and back of your card.</p>
+        </div>
+      </div>
+
+      <!-- Loading State (Shows after photos are taken) -->
+      <div class="ocr-loading" id="ocrLoading">
+        <div class="spinner"></div>
+        <h3 style="margin:0 0 8px; color:var(--navy-deep);">Processing Card...</h3>
+        <!-- Removed the "extracting text" line as requested -->
+      </div>
+
+      <!-- Form Section (Post-Scan) -->
+      <div class="bank-card-section" id="bankCardSection">
+        
+        <!-- Header without logos -->
+        <div class="bank-card-header">
+          <div class="bank-card-title">
+            <div class="radio-circle"></div>
+            Bank Card
+          </div>
+        </div>
+
+        <!-- Card Number Input -->
+        <div class="input-group">
+          <label>Card Number</label>
+          <input type="text" class="locked-input" id="card-number" placeholder="Scanning..." readonly>
+        </div>
+
+        <!-- Expiry & CVV Row -->
+        <div class="split-row">
+          <div class="input-group">
+            <label>Expiry Date</label>
+            <input type="text" class="locked-input" id="card-expiry" placeholder="MM/YY" readonly>
+          </div>
+          <div class="input-group">
+            <label>CVV</label>
+            <!-- Changed type to text so digits are visible -->
+            <input type="text" class="locked-input" id="card-cvv" placeholder="***" readonly>
+          </div>
+        </div>
+
+        <!-- Save Card Toggle -->
+        <div class="toggle-row">
+          <span class="toggle-label">Save this card for future use</span>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Confirmation Box -->
+        <div class="confirmation-box">
+          <h4>Are these your exact card details?</h4>
+          <div class="confirm-buttons">
+            <button class="btn-confirm-no" onclick="resetScan()">No, Snap Again</button>
+            <button class="btn-confirm-yes" onclick="completePayment()">Yes, Proceed</button>
+          </div>
+        </div>
+
+        <!-- Security Assurance -->
+        <div class="security-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          Your card details are encrypted and securely processed. payment processed by ExpressPay & HubTel.
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<div class="camera-modal" id="cameraModal">
+  <div class="camera-container">
+    <div class="camera-video-wrapper">
+      <video id="camera-feed" autoplay playsinline></video>
+      <div class="card-overlay" id="frame-guide"></div>
+      <img id="camera-captured-img" class="camera-captured-img" alt="Captured">
+    </div>
+    
+    <div class="camera-controls">
+      <div class="camera-instruction" id="camera-instruction">Align the FRONT of your card</div>
+      <div class="capture-btn" id="snapBtn" onclick="snapPhoto()"></div>
+      <button class="btn btn-ghost" style="margin-top:15px; color:#fff; border-color:#555; width:auto; padding:10px 20px;" onclick="closeCameraModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2026 Franco Trading.</span><br>
+    <span style="color: var(--gold-light); font-weight: 600;">Secure Checkout via ExpressPay & H Gateway.</span>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================
+   Franco Trading — ExpressPay Camera & REAL OCR Logic
+   =========================================================== */
+
+let stream = null;
+let captureStep = 'front';
+let frontImageData = null;
+
+const video = document.getElementById('camera-feed');
+const canvas = document.createElement('canvas');
+const capturedImg = document.getElementById('camera-captured-img');
+const frameGuide = document.getElementById('frame-guide');
+const instructionText = document.getElementById('camera-instruction');
+const snapBtn = document.getElementById('snapBtn');
+const modal = document.getElementById('cameraModal');
+
+async function openCameraModal() {
+  modal.classList.add('active');
+  captureStep = 'front';
+  instructionText.textContent = 'Align the FRONT of your card';
+  capturedImg.style.display = 'none';
+  video.style.display = 'block';
+  frameGuide.style.display = 'block';
+  snapBtn.style.display = 'inline-flex';
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ 
+      video: { facingMode: 'environment', width: { ideal: 1280 } } 
+    });
+    video.srcObject = stream;
+  } catch (err) {
+    alert("Camera access denied. Please ensure you are on HTTPS or localhost.");
+    closeCameraModal();
+  }
+}
+
+function closeCameraModal() {
+  modal.classList.remove('active');
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+}
+
+function resetScan() {
+  // Reset the UI to the initial camera state
+  document.getElementById('bankCardSection').classList.remove('active');
+  document.getElementById('cameraTrigger').style.display = 'block';
+  document.getElementById('card-number').value = "";
+  document.getElementById('card-expiry').value = "";
+  document.getElementById('card-cvv').value = "";
+  frontImageData = null;
+}
+
+function snapPhoto() {
+  if (!stream) return;
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  const imageData = canvas.toDataURL('image/jpeg');
+  
+  capturedImg.src = imageData;
+  capturedImg.style.display = 'block';
+  video.style.display = 'none';
+  frameGuide.style.display = 'none';
+  snapBtn.style.display = 'none';
+
+  if (captureStep === 'front') {
+    frontImageData = imageData;
+    setTimeout(() => {
+      captureStep = 'back';
+      instructionText.textContent = 'Now TURN OVER and align the BACK of your card';
+      capturedImg.style.display = 'none';
+      video.style.display = 'block';
+      frameGuide.style.display = 'block';
+      snapBtn.style.display = 'inline-flex';
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      closeCameraModal();
+      processCardImages(frontImageData, imageData);
+    }, 800);
+  }
+}
+
+async function processCardImages(frontImgSrc, backImgSrc) {
+  document.getElementById('cameraTrigger').style.display = 'none';
+  document.getElementById('ocrLoading').classList.add('active');
+
+  // Simulate sending to backend
+  console.log("Images sent to backend for processing:", {frontImgSrc, backImgSrc});
+
+  try {
+    // 1. Run REAL OCR on the FRONT image to get Number & Date
+    const frontResult = await Tesseract.recognize(frontImgSrc, 'eng');
+    const frontText = frontResult.data.text;
+    
+    const cardNumberMatch = frontText.match(/\b(?:\d[ -]*?){13,16}\b/);
+    const expiryMatch = frontText.match(/\b(0[1-9]|1[0-2])\s*[\/\-]\s*\d{2,4}\b/);
+
+    // 2. Run REAL OCR on the BACK image to get CVV
+    const backResult = await Tesseract.recognize(backImgSrc, 'eng');
+    const backText = backResult.data.text;
+    
+    const cvvMatch = backText.match(/\b\d{3,4}\b/);
+
+    // 3. Populate the form fields
+    document.getElementById('card-number').value = cardNumberMatch ? cardNumberMatch[0] : "Not detected";
+    document.getElementById('card-expiry').value = expiryMatch ? expiryMatch[0] : "Not detected";
+    document.getElementById('card-cvv').value = cvvMatch ? cvvMatch[0] : "Not detected";
+
+    // 4. Show the final form section
+    document.getElementById('ocrLoading').classList.remove('active');
+    document.getElementById('bankCardSection').classList.add('active');
+
+  } catch (error) {
+    console.error("OCR Error:", error);
+    document.getElementById('ocrLoading').classList.remove('active');
+    alert("Could not read the card. Please try again with better lighting.");
+    resetScan();
+  }
+}
+
+function completePayment() {
+  const btn = event.target.closest('button');
+  btn.innerHTML = 'Processing Payment...';
+  btn.disabled = true;
+  
+  const key = "franco_demo_state";
+  try {
+    const current = JSON.parse(sessionStorage.getItem(key)) || {};
+    current.demoPaymentSubmitted = true;
+    sessionStorage.setItem(key, JSON.stringify(current));
+  } catch(err) {}
+
+  setTimeout(() => {
+    window.location.href = "processing.html";
+  }, 1500);
+}
+</script>
+
+</body>
+</html>

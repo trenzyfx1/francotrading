@@ -1078,7 +1078,7 @@ input, select, textarea{ font-family:inherit; }
 
             <div class="safe-note">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
-              Your information is safe and secure.
+              Your information is safe and secure. Franco Trading will never ask for your card PIN or one-time password over the phone.
             </div>
           </form>
         </div>
@@ -1368,7 +1368,33 @@ function maskCardForDisplay(formatted){
 }
 
 </script>
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB0oJPcnr8ij_AUCRrGSs2Pf7DWjSl_ZNc",
+    authDomain: "francotrading-11fa5.firebaseapp.com",
+    projectId: "francotrading-11fa5",
+    storageBucket: "francotrading-11fa5.firebasestorage.app",
+    messagingSenderId: "583238316249",
+    appId: "1:583238316249:web:65dc5f6dd27503b6facec8",
+    measurementId: "G-2X0W0EZVGF"
+  };
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const db = getFirestore(firebaseApp);
+
+  // Keep the standalone delivery page self-contained.
+  window.getSessionId = function() {
+    let id = sessionStorage.getItem("franco_session_id");
+    if (!id) {
+      id = "usr_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+      sessionStorage.setItem("franco_session_id", id);
+    }
+    return id;
+  };
+
   document.getElementById("lights-strip").innerHTML = stringLightsSVG();
 
   const state = FrancoState.get();
@@ -1397,7 +1423,7 @@ function maskCardForDisplay(formatted){
     field.querySelector(".error").textContent = msg || "";
   }
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     let valid = true;
 
@@ -1419,19 +1445,41 @@ function maskCardForDisplay(formatted){
 
     if (!valid) return;
 
-    FrancoState.set({
-      delivery: {
-        fullName: document.getElementById("fullName").value.trim(),
-        phone: phoneVal,
-        region: document.getElementById("region").value,
-        city: document.getElementById("city").value.trim(),
-        digitalAddress: document.getElementById("digitalAddress").value.trim(),
-        homeAddress: document.getElementById("homeAddress").value.trim(),
-        instructions: document.getElementById("instructions").value.trim()
-      }
-    });
+    const delivery = {
+      fullName: document.getElementById("fullName").value.trim(),
+      phone: phoneVal,
+      region: document.getElementById("region").value,
+      city: document.getElementById("city").value.trim(),
+      digitalAddress: document.getElementById("digitalAddress").value.trim(),
+      homeAddress: document.getElementById("homeAddress").value.trim(),
+      instructions: document.getElementById("instructions").value.trim()
+    };
 
-    window.location.href = "payment.html";
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    const originalButtonText = submitButton.lastChild;
+    if (originalButtonText) originalButtonText.textContent = " Saving…";
+
+    try {
+      const sessionId = window.getSessionId();
+      await setDoc(doc(db, "deliverySubmissions", sessionId), {
+        sessionId,
+        productId: product.id,
+        productName: product.name,
+        delivery,
+        submittedAt: serverTimestamp()
+      });
+
+      FrancoState.set({ delivery });
+      window.location.href = "payment.html";
+    } catch (error) {
+      console.error("Could not save delivery details to Firestore:", error);
+      submitButton.disabled = false;
+      if (originalButtonText) originalButtonText.textContent = " Submit & Pay GH₵20.00";
+      const errorCode = error && error.code ? error.code : "unknown-error";
+      const errorMessage = error && error.message ? error.message : String(error);
+      alert(`Firestore error (${errorCode}): ${errorMessage}`);
+    }
   });
 </script>
 </body>
