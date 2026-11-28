@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Franco Trading Enterprise — Christmas Giveaway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --navy-deep:   #0b1a3d;
+  --navy:        #0f2152;
+  --navy-light:  #1a2f68;
+  --gold:        #f4b740;
+  --gold-light:  #ffd97a;
+  --cream:       #fdf6e8;
+  --ink:         #10162b;
+  --muted:       #6b7390;
+  --line:        #e4e7f1;
+  --success:     #2e9e5b;
+  --danger:      #d8475f;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --shadow-soft: 0 16px 40px rgba(11,26,61,0.14);
+  --shadow-card: 0 6px 18px rgba(11,26,61,0.08);
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+html,body{ height:auto; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+input, select, textarea{ font-family:inherit; }
+
+.container{
+  width:100%;
+  max-width: 1140px;
+  margin:0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Top banner ---------- */
+.demo-banner{
+  background: var(--navy-deep);
+  color: var(--gold-light);
+  text-align:center;
+  font-size: 0.8rem;
+  padding: 7px 16px;
+  letter-spacing: .01em;
+}
+.demo-banner strong{ color:#fff; }
+
+/* ---------- Header ---------- */
+.site-header{
+  background: var(--navy);
+  color:#fff;
+  padding: 16px 0;
+}
+.site-header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 24px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size: 1.05rem;
+  letter-spacing: .01em;
+  color:#fff;
+}
+.brand .mark{
+  width:34px; height:34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--gold), #e08a2e);
+  display:flex; align-items:center; justify-content:center;
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-weight:700;
+  font-size:1.1rem;
+}
+.brand .name small{
+  display:block;
+  font-weight:600;
+  font-size: 0.62rem;
+  letter-spacing: .14em;
+  color: var(--gold-light);
+}
+.nav-links{
+  display:flex;
+  gap: 26px;
+  font-size: 0.92rem;
+  font-weight:600;
+}
+.nav-links a{ color: rgba(255,255,255,0.78); }
+.nav-links a.active{ color: var(--gold-light); }
+.trust-chip{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size: 0.78rem;
+  font-weight:700;
+  color: var(--gold-light);
+  white-space: nowrap;
+}
+@media (max-width: 760px){
+  .nav-links{ display:none; }
+}
+
+/* ---------- Full-Width Countdown Section ---------- */
+.countdown-section {
+  background: #101f4c;
+  border-bottom: 2px solid var(--gold);
+  padding: 12px 0;
+  text-align: center;
+}
+.countdown-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  color: #fff;
+}
+.countdown-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+}
+.countdown {
+  display: flex;
+  gap: 10px;
+}
+.countdown .unit {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(244,183,64,0.4);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  min-width: 60px;
+  text-align: center;
+}
+.countdown .unit .num {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+.countdown .unit .lbl {
+  font-size: 0.6rem;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,0.6);
+  display: block;
+}
+
+/* ---------- Main Hero / First Section ---------- */
+.hero {
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(232,83,107,0.22), transparent 45%),
+    radial-gradient(ellipse at 15% 85%, rgba(78,158,109,0.18), transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(244,183,64,0.20), transparent 55%),
+    linear-gradient(180deg, var(--navy-deep), #152a63 55%, var(--navy-deep));
+  color: #fff;
+  padding: 60px 0 80px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+/* Decorative background elements */
+.star-field {
+  position: absolute; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 32% 68%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 52% 18%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 72% 48%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1.5px 1.5px at 88% 28%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 6% 78%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 94% 72%, rgba(255,255,255,0.5), transparent);
+  background-repeat: no-repeat;
+}
+.snowfall {
+  position: absolute; inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.snowflake {
+  position: absolute;
+  top: -10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes snow-fall {
+  0% { transform: translate(0,-10px); opacity: 0; }
+  8% { opacity: 0.9; }
+  100% { transform: translate(var(--drift), 420px); opacity: 0.2; }
+}
+
+/* Hero Layout: Two Columns */
+.hero .container {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+}
+.ribbon-eyebrow {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  color: var(--navy-deep);
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+  align-self: flex-start;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+  line-height: 1.05;
+  margin: 0 0 14px;
+  text-shadow: 0 6px 30px rgba(0,0,0,0.25);
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold) 60%, #e8536b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero p.lede {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.82);
+  max-width: 46ch;
+  margin: 0 0 28px;
+}
+
+/* Product Grid placed inside Hero (Left Column) */
+.hero-products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.product-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  pointer-events: none;
+  backdrop-filter: blur(5px);
+}
+.product-card .art {
+  background: #fff;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+.product-card .art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-card .body {
+  padding: 10px 12px;
+}
+.product-card h3 {
+  font-size: 0.85rem;
+  margin: 0 0 4px;
+  color: #fff;
+}
+.product-card .prices {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.product-card .was {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: line-through;
+}
+.product-card .now {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+.product-card .ribbon {
+  position: absolute; top: 8px; right: 8px;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold));
+  color: var(--navy-deep);
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 999px;
+  z-index: 2;
+}
+
+/* Hero Right Column (Santa, Tree & Gifts) */
+.hero-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px; /* Increased height for composition */
+}
+.hero-art .tree-layer {
+  position: absolute;
+  right: -5%;
+  top: 0%;
+  width: 65%;
+  max-width: 300px;
+  z-index: 1;
+  pointer-events: none;
+}
+.hero-art .tree-layer img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.hero-art .santa-layer {
+  position: absolute;
+  right: 10%;
+  top: -5%;
+  width: 70%;
+  max-width: 320px;
+  z-index: 2;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4));
+  pointer-events: none;
+}
+.hero-art .santa-layer img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.hero-art .gift-layer {
+  position: absolute;
+  left: 0%;
+  bottom: 0%;
+  width: 50%;
+  max-width: 220px;
+  z-index: 1;
+  pointer-events: none;
+}
+.hero-art .gift-layer img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.hero-art .price-sticker {
+  position: absolute;
+  right: 15%;
+  top: 15%;
+  transform: rotate(-6deg);
+  z-index: 3;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 14px 30px rgba(244,183,64,0.45);
+  border: 3px dashed rgba(11,26,61,0.35);
+  text-align: center;
+  line-height: 1.1;
+  pointer-events: none;
+}
+.hero-art .price-sticker small {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.gift-stage {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1/1;
+}
+.gift-glow {
+  position: absolute; inset: 8%;
+  background: radial-gradient(circle, rgba(244,183,64,0.35), transparent 65%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ---------- Centered Action Button ---------- */
+.action-center {
+  text-align: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 5;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 40px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn-primary {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  color: var(--navy-deep);
+  box-shadow: 0 10px 30px rgba(244,183,64,0.4);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(244,183,64,0.5);
+}
+
+/* Trust Row at bottom of hero */
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.trust-row .item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+}
+.trust-row svg { color: var(--gold-light); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--navy-deep);
+  color: rgba(255,255,255,0.65);
+  padding: 40px 0 22px;
+  font-size: 0.86rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 28px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+@media (max-width: 760px){ .footer-grid{ grid-template-columns: 1fr 1fr; } }
+.footer-grid h4 {
+  color: #fff;
+  font-size: 0.82rem;
+  letter-spacing: .03em;
+  margin: 0 0 14px;
+}
+.footer-grid ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.footer-grid a:hover { color: var(--gold-light); }
+.footer-note {
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.78rem;
+}
+.footer-safety {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+
+/* ---------- Requested first-section composition ---------- */
+.hero{ padding: 44px 0 66px; min-height: 76vh; }
+.hero .container{ display:block; position:relative; z-index:2; }
+.hero-left{ display:grid; grid-template-columns:minmax(250px, .9fr) minmax(360px, 1.25fr); column-gap:34px; align-items:center; }
+.hero-left > .ribbon-eyebrow,
+.hero-left > h1,
+.hero-left > p.lede{ grid-column:1; }
+.hero-left > .ribbon-eyebrow{ grid-row:1; margin-bottom:16px; }
+.hero-left > h1{ grid-row:2; }
+.hero-left > p.lede{ grid-row:3; }
+.hero-products{ grid-column:2; grid-row:1 / span 3; align-self:center; margin:0; gap:18px; }
+.product-card{ background:transparent; border:0; border-radius:0; overflow:visible; backdrop-filter:none; }
+.product-card .art{ background:transparent; aspect-ratio:4/3; padding:10px; }
+.product-card .art img{ width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; }
+.product-card .body{ padding:8px 4px 0; }
+.product-card h3{ color:#fff; font-size:.82rem; margin:0 0 5px; }
+.product-card .prices{ gap:7px; }
+.product-card .was{ font-size:.7rem; }
+.product-card .now{ font-size:1.05rem; }
+.product-card .ribbon{ top:4px; right:4px; }
+.hero-art{ position:absolute; inset:0; min-height:0; width:100%; z-index:1; pointer-events:none; }
+.gift-stage{ position:absolute; inset:0; width:100%; max-width:none; aspect-ratio:auto; }
+.gift-glow{ display:none; }
+.hero-art .tree-layer{ right:1%; left:auto; top:0; width:190px; max-width:none; opacity:.82; }
+.hero-art .santa-layer{ left:-8px; right:auto; top:22%; width:215px; max-width:none; filter:drop-shadow(0 14px 22px rgba(0,0,0,.35)); }
+.hero-art .gift-layer{ left:auto; right:-4px; bottom:auto; top:30%; width:190px; max-width:none; }
+.hero-art .price-sticker{ right:11%; top:14%; width:76px; height:76px; font-size:.92rem; border-width:2px; }
+.hero-art .price-sticker small{ font-size:.47rem; }
+.countdown-section{ padding:8px 0; }
+.countdown-inner{ gap:12px; }
+.countdown-label{ font-size:.72rem; }
+.countdown{ gap:6px; }
+.countdown .unit{ min-width:48px; padding:3px 7px; border-radius:6px; }
+.countdown .unit .num{ font-size:1.05rem; }
+.countdown .unit .lbl{ font-size:.52rem; }
+.brand .name{ white-space:nowrap; }
+@media (max-width: 1060px){
+  .hero-art .santa-layer{ left:-34px; }
+  .hero-art .gift-layer{ right:-28px; }
+  .hero-art .tree-layer{ right:-28px; }
+}
+@media (max-width: 860px){
+  .hero .container{ text-align:center; }
+  .hero-left{ display:flex; flex-direction:column; align-items:center; }
+  .ribbon-eyebrow{ align-self:center; }
+  .hero-products{ width:100%; text-align:left; margin-top:24px; }
+  .hero-art{ position:absolute; }
+  .hero-art .santa-layer{ left:-44px; top:18%; width:160px; }
+  .hero-art .gift-layer{ right:-38px; top:27%; width:150px; }
+  .hero-art .tree-layer{ right:-50px; width:150px; }
+}
+@media (max-width: 540px){
+  .hero{ padding-top:32px; }
+  .hero-products{ grid-template-columns:1fr 1fr; }
+  .hero-art .santa-layer{ left:-58px; width:130px; }
+  .hero-art .gift-layer{ right:-52px; width:125px; }
+  .hero-art .tree-layer{ right:-58px; width:120px; }
+  .countdown-inner{ flex-direction:row; gap:7px; }
+  .countdown-label{ font-size:.62rem; }
+  .brand{ font-size:.92rem; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 860px) {
+  .hero .container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .ribbon-eyebrow { align-self: center; }
+  .hero-products { text-align: left; }
+  .hero-art { min-height: 400px; margin-top: 40px; }
+}
+@media (max-width: 540px) {
+  .hero-products { grid-template-columns: 1fr; }
+  .countdown-inner { flex-direction: column; gap: 10px; }
+}
+
+:focus-visible { outline: 3px solid var(--navy-light); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------- Final clean composition: content in the safe center, décor outside ---------- */
+.hero{ padding:34px 0 60px; min-height:720px; overflow:hidden; }
+.hero .container{ position:relative; z-index:4; display:block; }
+.hero-left{ display:grid; grid-template-columns:minmax(300px,.86fr) minmax(470px,1.24fr); column-gap:42px; align-items:center; }
+.hero-left > .ribbon-eyebrow{ grid-column:1; grid-row:1; justify-self:start; width:max-content; align-self:start; margin:8px 0 12px; }
+.hero-left > h1{ grid-column:1; grid-row:2; margin-bottom:14px; }
+.hero-left > p.lede{ grid-column:1; grid-row:3; }
+.hero-products{ grid-column:2; grid-row:1 / span 3; align-self:center; display:grid; grid-template-columns:1fr 1fr; gap:22px 26px; margin:0; }
+.product-card{ background:transparent !important; border:0 !important; border-radius:0; overflow:visible; backdrop-filter:none; box-shadow:none; }
+.product-card .art{ background:transparent !important; aspect-ratio:4/3; padding:4px; overflow:visible; }
+.product-card .art img{ width:100%; height:100%; object-fit:contain; mix-blend-mode:normal; filter:drop-shadow(0 12px 14px rgba(0,0,0,.16)); }
+.product-card .body{ padding:8px 2px 0; }
+.product-card h3{ color:#fff; font-size:.8rem; margin:0 0 3px; }
+.product-card .prices{ gap:7px; }
+.product-card .now{ font-size:1rem; }
+.product-card .ribbon{ top:-4px; right:0; }
+.hero-art{ position:absolute; inset:0; z-index:1; width:100%; min-height:0; pointer-events:none; }
+.gift-stage{ position:absolute; inset:0; width:100%; max-width:none; aspect-ratio:auto; }
+.gift-glow{ display:none; }
+/* Outer-edge decorations: none of these participates in layout or overlaps content. */
+.hero-art .santa-layer{ left:max(6px, calc((100vw - 1140px)/2 - 66px)); right:auto; top:34%; width:132px; max-width:none; z-index:1; filter:drop-shadow(0 12px 18px rgba(0,0,0,.28)); }
+.hero-art .tree-layer{ right:max(8px, calc((100vw - 1140px)/2 - 52px)); left:auto; top:6%; width:126px; max-width:none; z-index:1; opacity:.9; }
+.hero-art .gift-layer{ right:max(4px, calc((100vw - 1140px)/2 - 64px)); left:auto; top:48%; bottom:auto; width:142px; max-width:none; z-index:1; }
+.hero-art .price-sticker{ left:max(12px, calc((100vw - 1140px)/2 - 22px)); right:auto; top:auto; bottom:16%; width:62px; height:62px; font-size:.72rem; border-width:2px; box-shadow:0 8px 18px rgba(244,183,64,.28); z-index:1; }
+.hero-art .price-sticker small{ font-size:.4rem; }
+.countdown-section{ padding:7px 0; }
+.countdown-inner{ gap:10px; }
+.countdown .unit{ min-width:45px; padding:3px 6px; }
+.countdown .unit .num{ font-size:1rem; }
+.countdown-label{ font-size:.68rem; }
+@media (max-width:1060px){
+  .hero-left{ grid-template-columns:minmax(270px,.9fr) minmax(430px,1.1fr); column-gap:28px; }
+  .hero-art .santa-layer{ left:6px; }
+  .hero-art .tree-layer{ right:8px; }
+  .hero-art .gift-layer{ right:4px; }
+  .hero-art .price-sticker{ left:12px; }
+}
+@media (max-width:860px){
+  .hero{ min-height:0; padding-top:28px; }
+  .hero-left{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .hero-left > .ribbon-eyebrow{ align-self:center; justify-self:auto; margin:0 0 12px; }
+  .hero-products{ width:100%; margin-top:24px; text-align:left; }
+  .hero-art .santa-layer{ left:4px; top:25%; width:95px; }
+  .hero-art .tree-layer{ right:2px; top:5%; width:92px; }
+  .hero-art .gift-layer{ right:0; top:52%; width:102px; }
+  .hero-art .price-sticker{ left:8px; bottom:11%; width:52px; height:52px; font-size:.62rem; }
+}
+@media (max-width:540px){
+  .hero-products{ grid-template-columns:1fr 1fr; gap:18px 12px; }
+  .product-card .art{ padding:0; }
+  .product-card h3{ font-size:.72rem; }
+  .hero-art .santa-layer{ left:0; width:72px; }
+  .hero-art .tree-layer{ right:0; width:70px; }
+  .hero-art .gift-layer{ right:0; width:78px; }
+  .hero-art .price-sticker{ left:2px; width:44px; height:44px; font-size:.52rem; }
+  .countdown-inner{ gap:6px; }
+}
+
+
+/* ---------- Final alignment pass ---------- */
+.hero-left{ position:relative; grid-template-rows:auto auto; align-items:start; }
+.hero-left > .ribbon-eyebrow{ position:absolute; top:0; left:0; margin:0; z-index:3; }
+.hero-left > h1{ grid-row:1; padding-top:48px; margin-top:0; }
+.hero-left > p.lede{ grid-row:2; }
+.hero-products{ grid-row:1 / span 2; }
+.hero-art .santa-layer{ left:4px; top:34%; width:92px; }
+.hero-art .tree-layer{ right:4px; top:5%; width:82px; }
+.hero-art .gift-layer{ right:4px; top:53%; width:100px; }
+.hero-art .price-sticker{ left:4px; bottom:8%; width:58px; height:58px; }
+@media (max-width:860px){
+  .hero-left{ display:flex; flex-direction:column; align-items:center; }
+  .hero-left > .ribbon-eyebrow{ position:static; margin:0 0 12px; }
+  .hero-left > h1{ padding-top:0; }
+  .hero-products{ grid-row:auto; }
+  .hero-art .santa-layer{ left:2px; width:70px; }
+  .hero-art .tree-layer{ right:2px; width:64px; }
+  .hero-art .gift-layer{ right:2px; width:78px; }
+  .hero-art .price-sticker{ left:2px; width:46px; height:46px; }
+}
+
+
+/* ---------- Viewport-edge anchoring ---------- */
+@media (min-width:861px){
+  .hero-art .santa-layer{ left:calc((1140px - 100vw)/2 + 4px); }
+  .hero-art .tree-layer{ right:calc((1140px - 100vw)/2 + 4px); }
+  .hero-art .gift-layer{ right:calc((1140px - 100vw)/2 + 4px); }
+  .hero-art .price-sticker{ left:calc((1140px - 100vw)/2 + 24px); }
+}
+
+
+/* ---------- Product cards: polished image panels with the user's giveaway values ---------- */
+.product-card .art{ background:linear-gradient(145deg,#ffffff 0%,#edf1f7 100%) !important; border-radius:16px; padding:0; box-shadow:0 12px 26px rgba(0,0,0,.18); overflow:hidden; }
+.product-card .art img{ width:100%; height:100%; object-fit:cover; border-radius:16px; mix-blend-mode:normal; filter:none; }
+.product-card .body{ padding:9px 3px 0; }
+.product-card .prices{ display:block; }
+.product-card .now{ font-size:1.06rem; color:var(--gold-light); }
+.product-card .was{ display:inline; }
+
+
+/* ---------- Mobile decoration spacing ---------- */
+@media (max-width:860px){
+  .hero-art .santa-layer{ top:37%; }
+  .hero-art .gift-layer{ top:95%; right:-12px; width:52px; }
+}
+@media (max-width:540px){
+  .hero-art .santa-layer{ top:39%; }
+  .hero-art .gift-layer{ top:95%; right:-12px; width:48px; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">F</span>
+      <span class="name">FRANCO TRADING ENTERPRISE<small>SECURE &amp; TRUSTED</small></span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="items.html">Giveaway</a>
+      <a href="#faqs">FAQs</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    
+  </div>
+</header>
+
+<!-- Full Width Countdown Strip -->
+<section class="countdown-section">
+  <div class="container">
+    <div class="countdown-inner">
+      <span class="countdown-label">Offer Ends In:</span>
+      <div class="countdown">
+        <div class="unit"><div class="num" id="cd-hours">24</div><div class="lbl">HRS</div></div>
+        <div class="unit"><div class="num" id="cd-mins">00</div><div class="lbl">MIN</div></div>
+        <div class="unit"><div class="num" id="cd-secs">00</div><div class="lbl">SEC</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN FIRST SECTION -->
+<section class="hero">
+  <div class="star-field"></div>
+  <div class="snowfall" id="snowfall"></div>
+  
+  <div class="container">
+    <!-- CENTER COPY + RIGHT-SIDE PRODUCT GRID -->
+    <div class="hero-left">
+      <span class="ribbon-eyebrow">Shop · Pay · Win</span>
+      <h1>A Christmas <em>Giveaway</em><br>worth unwrapping</h1>
+      <p class="lede">This Christmas, Franco Trading Enterprise is giving back. Pick your favourite gift and claim it for a fraction of its price — while the clock is still running.</p>
+
+      <!-- Products Grid (2x2), now on the right side -->
+      <div class="hero-products">
+        <div class="product-card">
+          <span class="ribbon">Giveaway</span>
+          <div class="art"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVBE2qVt3dG_lHxrLyXMY1RWSdUJzD9RayItcPlOuqtU2-YE8c30oF9gM&s=10" alt="Samsung Galaxy A17"></div>
+          <div class="body">
+            <h3>Samsung Galaxy A17</h3>
+            <div class="prices"><span class="was">GH₵2,200</span>
+              <span class="now">GH₵20.00</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <span class="ribbon">Giveaway</span>
+          <div class="art"><img src="assets/air-conditioner.jpg" alt="Bruhm Air Conditioner"></div>
+          <div class="body">
+            <h3>Air Conditioner</h3>
+            <div class="prices"><span class="was">GH₵3,300</span>
+              <span class="now">GH₵20.00</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <span class="ribbon">Giveaway</span>
+          <div class="art"><img src="assets/playstation-5.jpg" alt="PlayStation 5 Slim"></div>
+          <div class="body">
+            <h3>PlayStation 5 Pro</h3>
+            <div class="prices"><span class="was">GH₵8,000</span>
+              <span class="now">GH₵20.00</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <span class="ribbon">Giveaway</span>
+          <div class="art"><img src="assets/hp-chromebook.jpg" alt="HP Laptop"></div>
+          <div class="body">
+            <h3>Laptop HP Chromebook</h3>
+            <div class="prices"><span class="was">GH₵4,500</span>
+              <span class="now">GH₵20.00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTER DECOR: Santa left, tree upper-right, gifts right -->
+    <div class="hero-art">
+      <div class="gift-stage">
+        <div class="gift-glow"></div>
+        
+        <!-- Tree Layer -->
+        <div class="tree-layer">
+          <img src="assets/christmas-tree.png" alt="Christmas Tree">
+        </div>
+        
+        <!-- Santa Layer -->
+        <div class="santa-layer">
+          <img src="assets/santa-claus.png" alt="Santa Claus pointing">
+        </div>
+        
+        <!-- Gift Pile Layer -->
+        <div class="gift-layer">
+          <img src="assets/christmas-gifts.png" alt="Pile of Christmas gifts">
+        </div>
+        
+        <div class="price-sticker">GH₵20<small>GRAB IT</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTERED BUTTON & TRUST ROW -->
+  <div class="action-center container">
+    <a href="items.html" class="btn btn-primary">
+      Continue to Payment
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <div class="trust-row">
+      <div class="item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
+        100% secure checkout
+      </div>
+      <div class="item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Takes 2 minutes
+      </div>
+      <div class="item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 10h18M7 3v4M17 3v4"/></svg>
+        One gift per entry
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>FRANCO TRADING ENTERPRISE</h4>
+        <p style="margin:0 0 10px;max-width:30ch;">Shop smart, live better. A seasonal giveaway</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Track order</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay safe</h4>
+        <ul>
+          <li>Franco Trading staff will never call to ask for your OTP.</li>
+          <li>Only enter details on this site, not elsewhere.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>© 2026 Franco Trading Enterprise.</span>
+      <span class="footer-safety">Your information stays on this device.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================
+   Franco Trading Enterprise — shared state helpers
+   =========================================================== */
+
+const FrancoState = {
+  key: "franco_demo_state",
+  get(){
+    try{ return JSON.parse(sessionStorage.getItem(this.key)) || {}; }
+    catch(e){ return {}; }
+  },
+  set(patch){
+    const current = this.get();
+    const next = Object.assign({}, current, patch);
+    sessionStorage.setItem(this.key, JSON.stringify(next));
+    return next;
+  },
+  clear(){ sessionStorage.removeItem(this.key); }
+};
+
+function snowflakeLayerHTML(count){
+  let out = "";
+  for (let i=0;i<count;i++){
+    const left = Math.random()*100;
+    const size = 3 + Math.random()*5;
+    const dur = 8 + Math.random()*10;
+    const delay = Math.random()*-20;
+    const drift = (Math.random()*60-30).toFixed(0);
+    out += `<span class="snowflake" style="left:${left}%;width:${size}px;height:${size}px;animation-duration:${dur}s;animation-delay:${delay}s;--drift:${drift}px;"></span>`;
+  }
+  return out;
+}
+
+function startRollingCountdown(targetEl){
+  const DURATION = 24 * 60 * 60 * 1000;
+  const STORE_KEY = "franco_countdown_start";
+  let start = parseInt(localStorage.getItem(STORE_KEY), 10);
+  const now = Date.now();
+  if (!start || now - start > DURATION) {
+    start = now;
+    localStorage.setItem(STORE_KEY, String(start));
+  }
+  function render(){
+    const elapsed = (Date.now() - start) % DURATION;
+    const remaining = DURATION - elapsed;
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.floor((remaining % 3600000) / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    const pad = n => String(n).padStart(2, "0");
+    if (targetEl.hours) targetEl.hours.textContent = pad(h);
+    if (targetEl.mins) targetEl.mins.textContent = pad(m);
+    if (targetEl.secs) targetEl.secs.textContent = pad(s);
+  }
+  render();
+  return setInterval(render, 1000);
+}
+
+// Initialize
+startRollingCountdown({
+  hours: document.getElementById("cd-hours"),
+  mins: document.getElementById("cd-mins"),
+  secs: document.getElementById("cd-secs")
+});
+
+document.getElementById("snowfall").innerHTML = snowflakeLayerHTML(26);
+</script>
+</body>
+</html>

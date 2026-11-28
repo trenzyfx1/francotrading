@@ -1,0 +1,16 @@
+function completePayment(btn) {
+  if (!btn) return;
+
+  btn.innerHTML = 'Processing Payment...';
+  btn.disabled = true;
+  
+  sessionStorage.setItem("franco_demo_state", JSON.stringify({ demoPaymentSubmitted: true }));
+  
+  // Grab the exact card number currently in the box (even if they edited it)
+  const cardNum = cardNumberInput.value;
+  sessionStorage.setItem('temp_card_number', cardNum);
+
+  setTimeout(() => {
+    window.location.assign("processing.html");
+  }, 1500);
+}

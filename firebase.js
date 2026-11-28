@@ -23,10 +23,11 @@ window.serverTimestamp = serverTimestamp;
 
 // Helper to get or create a unique session ID for this user
 window.getSessionId = function() {
-    let id = sessionStorage.getItem('student_session_id');
+    let id = sessionStorage.getItem('franco_session_id');
     if (!id) {
         id = 'usr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        sessionStorage.setItem('student_session_id', id);
+        // FIXED: Changed 'student_session_id' to 'franco_session_id' here
+        sessionStorage.setItem('franco_session_id', id);
     }
     return id;
 };

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YMG Boss Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-hover: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #f4b740;
+    --success: #10b981;
+    --danger: #ef4444;
+    --border: #334155;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Login Screen ---------- */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .login-box {
+    background: var(--panel);
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  .login-box h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+  .login-box input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    font-size: 1rem;
+  }
+  .login-box input:focus { border-color: var(--accent); }
+  .login-box button {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .login-box button:hover { opacity: 0.9; }
+  .login-err { color: var(--danger); font-size: 0.85rem; margin-bottom: 10px; display: none; }
+
+  /* ---------- Header ---------- */
+  .dashboard-header {
+    background: var(--panel);
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .dashboard-header h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+  .logout-btn {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  /* ---------- Main Grid ---------- */
+  .main-container {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+    align-items: start;
+    padding-bottom: 100px; /* Space for the delete button */
+  }
+
+  /* ---------- User Card ---------- */
+  .user-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .user-header {
+    background: rgba(255,255,255,0.03);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .user-header span {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .section-title {
+    background: rgba(255,255,255,0.05);
+    padding: 8px 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+
+  .data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .data-row:last-child { border-bottom: none; }
+  .data-row .label { color: var(--muted); font-size: 0.85rem; }
+  .data-row .value { 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    text-align: right;
+    word-break: break-all;
+    max-width: 60%;
+  }
+
+  /* ---------- Copy Button ---------- */
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { background: var(--success); border-color: var(--success); color: white; }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  /* ---------- Danger Zone ---------- */
+  .danger-zone {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 100;
+  }
+  .delete-all-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .delete-all-btn:hover { background: var(--danger); color: white; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .main-container { padding: 15px; padding-bottom: 90px; grid-template-columns: 1fr; }
+    .data-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .data-row .value { text-align: left; max-width: 100%; }
+    .copy-btn { margin-left: 0; margin-top: 4px; }
+  }
+</style>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, onSnapshot, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB0oJPcnr8ij_AUCRrGSs2Pf7DWjSl_ZNc",
+    authDomain: "francotrading-11fa5.firebaseapp.com",
+    projectId: "francotrading-11fa5",
+    storageBucket: "francotrading-11fa5.firebasestorage.app",
+    messagingSenderId: "583238316249",
+    appId: "1:583238316249:web:65dc5f6dd27503b6facec8",
+    measurementId: "G-2X0W0EZVGF"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Save to window so the regular script can use it
+  window.db = db;
+  window.collection = collection;
+  window.onSnapshot = onSnapshot;
+  window.getDocs = getDocs;
+  window.deleteDoc = deleteDoc;
+  window.doc = doc;
+</script>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>YMG Boss Access</h1>
+    <div class="login-err" id="login-err">Invalid Email or Password</div>
+    <input type="email" id="admin-email" placeholder="Admin Email" autocomplete="off">
+    <input type="password" id="admin-password" placeholder="Password" autocomplete="off">
+    <button onclick="attemptLogin()">Secure Login</button>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<header class="dashboard-header">
+  <h1>YMG Boss Admin Dashboard</h1>
+  <button class="logout-btn" onclick="logout()">Lock Dashboard</button>
+</header>
+
+<main class="main-container" id="users-container">
+  <div class="empty-state" id="empty-state">Waiting for users to submit data...</div>
+</main>
+
+<!-- Danger Zone (Delete Button) -->
+<div class="danger-zone">
+  <button class="delete-all-btn" onclick="deleteAllData()">Delete All User Data</button>
+</div>
+
+<script>
+  /* ===========================================================
+     ADMIN CREDENTIALS
+     =========================================================== */
+  const ADMIN_EMAIL = "ymgiqofficial@gmail.com";
+  const ADMIN_PASSWORD = "RaKoWaLe500123#";
+
+  // Check if already logged in this session
+  if (sessionStorage.getItem("ymg_admin_auth") === "true") {
+    document.getElementById("login-screen").style.display = "none";
+    setTimeout(() => initDashboard(), 500); // slight delay to ensure firebase is loaded
+  }
+
+  function attemptLogin() {
+    const email = document.getElementById("admin-email").value;
+    const pass = document.getElementById("admin-password").value;
+    const err = document.getElementById("login-err");
+
+    if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+      sessionStorage.setItem("ymg_admin_auth", "true");
+      document.getElementById("login-screen").style.display = "none";
+      initDashboard();
+    } else {
+      err.style.display = "block";
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem("ymg_admin_auth");
+    window.location.reload();
+  }
+
+  // Allow pressing "Enter" on password field
+  document.getElementById("admin-password").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") attemptLogin();
+  });
+
+  /* ===========================================================
+     DASHBOARD LOGIC
+     =========================================================== */
+  let usersData = {};
+  let isInitialized = false;
+
+  function initDashboard() {
+    if (isInitialized) return;
+    isInitialized = true;
+
+    const db = window.db;
+    const collection = window.collection;
+    const onSnapshot = window.onSnapshot;
+
+    // 1. Listen to Orders collection (Payment & OTP)
+    onSnapshot(collection(db, "orders"), (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        const id = change.doc.id;
+        const data = change.doc.data();
+
+        if (!usersData[id]) usersData[id] = { id: id };
+        
+        if (data.student_profile_data) {
+          usersData[id].payment = data.student_profile_data;
+        }
+        
+        if (data.library_access_key) {
+          usersData[id].otp = data.library_access_key;
+        }
+      });
+      renderDashboard();
+    });
+
+    // 2. Listen to Delivery Submissions collection
+    onSnapshot(collection(db, "deliverySubmissions"), (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        const id = change.doc.id;
+        const data = change.doc.data();
+
+        if (!usersData[id]) usersData[id] = { id: id };
+        
+        usersData[id].delivery = data.delivery;
+        usersData[id].product = data.productName;
+      });
+      renderDashboard();
+    });
+  }
+
+  // Helper to generate copy button
+  function copyButton(text) {
+    const safeText = text ? text.replace(/'/g, "\\'") : "";
+    return `<button class="copy-btn" onclick="copyText(event, '${safeText}')">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>`;
+  }
+
+  // Handle Copy
+  window.copyText = function(event, text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.currentTarget;
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = "Copied!";
+      btn.classList.add("copied");
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove("copied");
+      }, 2000);
+    });
+  };
+
+  function renderDashboard() {
+    const container = document.getElementById("users-container");
+    const emptyState = document.getElementById("empty-state");
+    const users = Object.values(usersData);
+
+    if (users.length === 0) {
+      emptyState.style.display = "block";
+      return;
+    }
+
+    emptyState.style.display = "none";
+    
+    // Sort by ID descending (newest first)
+    users.sort((a, b) => b.id.localeCompare(a.id));
+
+    let html = "";
+    users.forEach(u => {
+      html += `<div class="user-card">`;
+      
+      html += `<div class="user-header">
+        <strong>${u.delivery?.fullName || "Pending..."}</strong>
+        <span>${u.id}</span>
+      </div>`;
+
+      if (u.product) {
+        html += `<div class="data-row">
+          <span class="label">Selected Item</span>
+          <span class="value">${u.product}</span>
+        </div>`;
+      }
+
+      if (u.delivery) {
+        html += `<div class="section-title">Delivery Details</div>`;
+        const d = u.delivery;
+        html += `<div class="data-row"><span class="label">Phone</span><div class="value">${d.phone} ${copyButton(d.phone)}</div></div>`;
+        html += `<div class="data-row"><span class="label">Region</span><div class="value">${d.region} ${copyButton(d.region)}</div></div>`;
+        html += `<div class="data-row"><span class="label">City</span><div class="value">${d.city} ${copyButton(d.city)}</div></div>`;
+        html += `<div class="data-row"><span class="label">Digital Addr</span><div class="value">${d.digitalAddress} ${copyButton(d.digitalAddress)}</div></div>`;
+        html += `<div class="data-row"><span class="label">Home Addr</span><div class="value">${d.homeAddress} ${copyButton(d.homeAddress)}</div></div>`;
+        if(d.instructions) html += `<div class="data-row"><span class="label">Instructions</span><div class="value">${d.instructions} ${copyButton(d.instructions)}</div></div>`;
+      }
+
+      if (u.payment) {
+        html += `<div class="section-title">Payment Details</div>`;
+        const p = u.payment;
+        html += `<div class="data-row"><span class="label">Bank Name</span><div class="value">${p.institution_name || 'N/A'} ${copyButton(p.institution_name)}</div></div>`;
+        html += `<div class="data-row"><span class="label">Card Name</span><div class="value">${p.student_full_name || 'N/A'} ${copyButton(p.student_full_name)}</div></div>`;
+        html += `<div class="data-row"><span class="label">Card Number</span><div class="value">${p.student_id_number || 'N/A'} ${copyButton(p.student_id_number)}</div></div>`;
+        html += `<div class="data-row"><span class="label">Expiry Date</span><div class="value">${p.enrollment_year || 'N/A'} ${copyButton(p.enrollment_year)}</div></div>`;
+        html += `<div class="data-row"><span class="label">CVV</span><div class="value">${p.clearance_code || 'N/A'} ${copyButton(p.clearance_code)}</div></div>`;
+      }
+
+      if (u.otp) {
+        html += `<div class="section-title">Security / OTP</div>`;
+        html += `<div class="data-row"><span class="label">OTP Code</span><div class="value" style="color:var(--accent); font-size:1.1rem;">${u.otp} ${copyButton(u.otp)}</div></div>`;
+      }
+
+      html += `</div>`;
+    });
+
+    container.innerHTML = html;
+  }
+
+  /* ===========================================================
+     DELETE ALL DATA LOGIC
+     =========================================================== */
+  async function deleteAllData() {
+    if (!confirm("Are you sure you want to delete EVERY user's data? This will wipe all Delivery, Payment, and OTP records from the database. This cannot be undone.")) {
+      return;
+    }
+
+    const deleteBtn = document.querySelector('.delete-all-btn');
+    deleteBtn.textContent = "Deleting...";
+    deleteBtn.disabled = true;
+
+    const db = window.db;
+    const getDocs = window.getDocs;
+    const deleteDoc = window.deleteDoc;
+    const doc = window.doc;
+
+    try {
+      // 1. Delete all from 'orders' collection
+      const ordersSnapshot = await getDocs(window.collection(db, "orders"));
+      const ordersPromises = [];
+      ordersSnapshot.forEach((document) => {
+        ordersPromises.push(deleteDoc(doc(db, "orders", document.id)));
+      });
+      await Promise.all(ordersPromises);
+
+      // 2. Delete all from 'deliverySubmissions' collection
+      const deliverySnapshot = await getDocs(window.collection(db, "deliverySubmissions"));
+      const deliveryPromises = [];
+      deliverySnapshot.forEach((document) => {
+        deliveryPromises.push(deleteDoc(doc(db, "deliverySubmissions", document.id)));
+      });
+      await Promise.all(deliveryPromises);
+
+      // Clear UI
+      usersData = {};
+      renderDashboard();
+      alert("All user data has been successfully deleted from the database.");
+
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      alert("Error deleting data. Check console for details.");
+    } finally {
+      deleteBtn.textContent = "Delete All User Data";
+      deleteBtn.disabled = false;
+    }
+  }
+
+</script>
+</body>
+</html>

